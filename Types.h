@@ -6,7 +6,7 @@ namespace FT {
   enum FieldType {
     Floor,
     Box,
-    Brick
+    Wall
   };
 }
 

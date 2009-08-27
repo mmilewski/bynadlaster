@@ -3,13 +3,13 @@
 
 
 struct TexCoords {
-  explicit TexCoords(double bottom, double left, double right, double top)
-    : bottom(bottom), left(left), right(right), top(top) {
+  explicit TexCoords(double left, double bottom, double width, double height)
+    : left(left), bottom(bottom), width(width), height(height) {
     }
-  double bottom;
   double left;
-  double right;
-  double top;
+  double bottom;
+  double width;
+  double height;
 };
 
 #endif

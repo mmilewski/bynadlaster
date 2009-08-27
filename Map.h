@@ -14,14 +14,21 @@ public:
   void Update(double dt);
   void Load();
 
+  size_t GetWidth() const { return m_width; }
+  size_t GetHeight() const { return m_height; }
 
 protected:
-  void DrawTile(size_t x, size_t y);
+  void DrawTile(size_t x, size_t y, FT::FieldType type);
 
 private:
   boost::multi_array<FT::FieldType, 2> m_map;
+  size_t m_width;
+  size_t m_height;
   
 };
+
+
+typedef boost::shared_ptr<Map> MapPtr;
 
 
 #endif

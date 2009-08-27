@@ -2,7 +2,7 @@
 #define __GAME_H_INCLUDED__
 
 #include "StdAfx.h"
-
+#include "Map.h"
 
 
 class Game {
@@ -19,7 +19,7 @@ public:
 
 private:
   bool m_is_done;
-  
+  MapPtr m_map;
 };
 
 
