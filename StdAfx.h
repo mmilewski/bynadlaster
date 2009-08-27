@@ -13,6 +13,8 @@
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_image.h>
 
+#include "Constants.h"
+#include "Types.h"
 #include "Position.h"
 #include "TexCoords.h"
 
