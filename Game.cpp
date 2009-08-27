@@ -19,9 +19,8 @@ void Game::Draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
-  //   Renderer::Get().DrawSprite(Position(0, 0, .5, .5), TexCoords(0, 0, .1, .1));  
-
   m_map->Draw();
+
   SDL_GL_SwapBuffers();
 }
 
