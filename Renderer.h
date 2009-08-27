@@ -1,7 +1,6 @@
 #ifndef __RENDERER_H_INCLUDED__
 #define __RENDERER_H_INCLUDED__
 
-
 #include <boost/noncopyable.hpp>
 
 #include "StdAfx.h"
@@ -17,6 +16,8 @@ public:
     return s_instance;
   }
 
+protected:
+  SDL_Surface* flip( SDL_Surface *in, bool x, bool y, bool rgba );
 };
 
 #endif
