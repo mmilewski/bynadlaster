@@ -13,7 +13,16 @@ public:
   void InitGl();
   void Run();
 
+protected:
+  /**
+   * Zwraca czas (w sekundach) jaki minął od ostatniego wywołania tej metody
+   */
+  double GetDeltaTime();
+
+private:
   GamePtr m_game;
+  int m_window_width;
+  int m_window_height;
 };
 
 

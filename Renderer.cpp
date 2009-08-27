@@ -33,10 +33,10 @@ void Renderer::LoadTexture(std::string filename) {
 
 void Renderer::DrawSprite(Position pos, TexCoords texs) {
   glBegin(GL_QUADS);
-  glTexCoord2f(texs.left, texs.bottom); glVertex2f(pos.x, pos.y);
-  glTexCoord2f(texs.left + texs.width, texs.bottom); glVertex2f(pos.x + pos.width, pos.y);
-  glTexCoord2f(texs.left + texs.width, texs.bottom + texs.height); glVertex2f(pos.x + pos.width, pos.y + pos.height);
-  glTexCoord2f(texs.left, texs.bottom+texs.height); glVertex2f(pos.x, pos.y + pos.height);
+  glTexCoord2f(texs.left,              texs.bottom);                glVertex2f(pos.x,             pos.y);
+  glTexCoord2f(texs.left + texs.width, texs.bottom);                glVertex2f(pos.x + pos.width, pos.y);
+  glTexCoord2f(texs.left + texs.width, texs.bottom + texs.height);  glVertex2f(pos.x + pos.width, pos.y + pos.height);
+  glTexCoord2f(texs.left,              texs.bottom + texs.height);  glVertex2f(pos.x,             pos.y + pos.height);
   glEnd();
 }
 

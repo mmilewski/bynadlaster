@@ -23,6 +23,9 @@ void App::CreateWindow(int width, int height, int depth, bool fullscreen) {
   SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+  m_window_width = width;
+  m_window_height = height;
 }
 
 
@@ -58,7 +61,7 @@ void App::ProcessEvents() {
       // ignorujemy mysz
     }
     else {
-      std::cerr << "Uknown event\n";
+      std::cerr << "Unknown event\n";
     }
   }
 }
@@ -68,18 +71,42 @@ void App::InitGl() {
   glShadeModel(GL_SMOOTH);
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glEnable(GL_TEXTURE_2D);
+  Resize( m_window_width, m_window_height );
 }
 
 
 void App::Run() {
-  CreateWindow(800, 600, 32, false);
+  CreateWindow(600, 600, 32, false);
   InitGl();
     
   m_game.reset(new Game());
   while (!m_game->IsDone()) {
     ProcessEvents();
-#warning Plicz DT
-    m_game->Update(0);
+    m_game->Update( GetDeltaTime() );
     m_game->Draw();
   }
+}
+
+
+double App::GetDeltaTime() {
+  // wylicz dt
+  static unsigned int oldTime = SDL_GetTicks();
+  unsigned int newTime = SDL_GetTicks();
+  while(newTime==oldTime)
+    newTime = SDL_GetTicks();
+  double dt = (newTime - oldTime)/1000.0;
+  oldTime = newTime;
+
+  // update belki okna - co sekundę
+  const double captionRefreshInterval = .25;
+  static double lastCaptionUpdate = 0;
+  lastCaptionUpdate += dt;
+  if( lastCaptionUpdate > captionRefreshInterval ) {
+    std::stringstream ss;
+    ss << "FPS: " << 1.0/dt;
+    SDL_WM_SetCaption( ss.str().c_str(), 0 );
+    lastCaptionUpdate = 0;
+  }
+
+  return dt;
 }
