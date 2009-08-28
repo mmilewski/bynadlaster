@@ -14,6 +14,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <boost/assign/list_of.hpp>
+#include <boost/foreach.hpp>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>

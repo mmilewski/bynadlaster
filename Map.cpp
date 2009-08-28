@@ -12,6 +12,7 @@ Map::Map(size_t width, size_t height)
       m_map[y][x] = FT::Floor;
     }
   }
+  m_map[6][6] = FT::Wall;
 }
 
 
@@ -32,6 +33,17 @@ void Map::Update(double /* dt */) {
 
 void Map::Load() {
 
+}
+
+
+bool Map::IsFieldStandable(const Position& field_position) const {
+  std::cout << "x="<<field_position.x<<std::endl;
+  const int x = floor(field_position.x-3);
+  const int y = floor(field_position.y-1);
+  if (x<0 || static_cast<unsigned>(x)>=GetWidth() || y<0 || static_cast<unsigned>(y)>=GetHeight())
+    return false;
+
+  return m_map[y][x]==FT::Floor;
 }
 
 

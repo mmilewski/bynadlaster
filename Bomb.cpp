@@ -4,7 +4,7 @@
 
 
 Bomb::Bomb(Position position)
-  : m_anim_frame_num(0), m_position(position) {
+  : m_anim_frame_num(0), m_position(position), m_time_from_last_frame_switch(.0) {
 }
 
 void Bomb::DoDraw() {
@@ -15,5 +15,11 @@ void Bomb::DoDraw() {
 }
 
 void Bomb::DoUpdate(double dt) {
-
+  // process animation; change frame if necessary
+  const double frame_duration = .3;
+  m_time_from_last_frame_switch += dt;
+  if( m_time_from_last_frame_switch > frame_duration ) {
+    m_anim_frame_num = (m_anim_frame_num+rand()%7)%3;   // choose next frame at random
+    m_time_from_last_frame_switch -= frame_duration;
+  }
 }

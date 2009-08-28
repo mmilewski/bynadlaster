@@ -6,7 +6,7 @@ struct Position {
 
   explicit Position(double x, double y)
     : x(x), y(y) {
-    }
+  }
 
   double x;
   double y;

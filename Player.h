@@ -3,6 +3,7 @@
 
 #include "PlayerControl.h"
 #include "StdAfx.h"
+#include "AABB.h"
 
 class Player {
 public:
@@ -15,6 +16,8 @@ public:
   const Direction& GetDirection() const { return m_direction; }
   void PerformAction(PA::PlayerAction action);
   void StopAction(PA::PlayerAction action);
+  AABB GetAABB() const;
+  AABB GetNextAABB(double dt) const;
   
 private:
   Position m_position;

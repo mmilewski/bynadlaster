@@ -92,7 +92,7 @@ void App::Run() {
 
 
 double App::GetDeltaTime() {
-  // wylicz dt
+  // calculate delta time
   static unsigned int oldTime = SDL_GetTicks();
   unsigned int newTime = SDL_GetTicks();
   while(newTime==oldTime)
@@ -100,14 +100,14 @@ double App::GetDeltaTime() {
   double dt = (newTime - oldTime)/1000.0;
   oldTime = newTime;
 
-  // update belki okna - co sekundę
+  // update window caption - every quarter of a second
   const double captionRefreshInterval = .25;
   static double lastCaptionUpdate = 0;
   lastCaptionUpdate += dt;
-  if( lastCaptionUpdate > captionRefreshInterval ) {
+  if( lastCaptionUpdate >= captionRefreshInterval ) {
     std::stringstream ss;
-    ss << "FPS: " << 1.0/dt;
-    SDL_WM_SetCaption( ss.str().c_str(), 0 );
+    ss << "FPS: " << (dt==0 ? 99999 : 1.0/dt);
+    SDL_WM_SetCaption(ss.str().c_str(), 0);
     lastCaptionUpdate = 0;
   }
 

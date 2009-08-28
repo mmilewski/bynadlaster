@@ -17,6 +17,7 @@ protected:
 private:
   size_t m_anim_frame_num;
   Position m_position;
+  double m_time_from_last_frame_switch;
 };
 
 

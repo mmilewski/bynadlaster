@@ -20,7 +20,10 @@ public:
 
   void HandleInput(const SDL_Event& event);
 
-private:
+protected:
+  void CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt);
+
+ private:
   bool m_is_done;
   MapPtr m_map;
   std::vector<ObjectPtr> m_objects;   // enemies, fire, bomb, ups
