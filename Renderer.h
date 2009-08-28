@@ -9,8 +9,9 @@
 class Renderer : boost::noncopyable {
 public:
   void LoadTexture(std::string filename);
+  void DrawSprite(Position pos, TexCoords tc, Size ts);
   void DrawSprite(Position pos, TexCoords tc);
-  void SetTileSize(double width, double height)  { m_tile_width = width; m_tile_height = height; }
+  void SetTileSize(Size size)  { m_tile_width = size.width; m_tile_height = size.height; }
   
   static Renderer& Get() {
     static Renderer s_instance;

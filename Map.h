@@ -19,6 +19,7 @@ public:
 
 protected:
   void DrawTile(size_t x, size_t y, FT::FieldType type);
+  void DrawBorder();
 
 private:
   boost::multi_array<FT::FieldType, 2> m_map;

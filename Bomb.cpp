@@ -14,6 +14,6 @@ void Bomb::DoDraw() {
   Renderer::Get().DrawSprite(GetPosition(), tc);
 }
 
-
 void Bomb::DoUpdate(double dt) {
+
 }

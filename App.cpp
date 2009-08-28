@@ -79,7 +79,7 @@ void App::InitGl() {
 
 
 void App::Run() {
-  CreateWindow(600, 600, 32, false);
+  CreateWindow(800, 600, 32, false);
   InitGl();
     
   m_game.reset(new Game());

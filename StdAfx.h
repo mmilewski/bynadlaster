@@ -21,5 +21,6 @@
 #include "Types.h"
 #include "Position.h"
 #include "TexCoords.h"
+#include "Size.h"
 
 #endif

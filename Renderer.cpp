@@ -14,8 +14,8 @@ void Renderer::LoadTexture(std::string filename) {
   glGenTextures(1, textures);
   glBindTexture(GL_TEXTURE_2D, textures[0]);
       
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -32,7 +32,11 @@ void Renderer::LoadTexture(std::string filename) {
   SDL_FreeSurface(image);
 }
 
-void Renderer::DrawSprite(Position pos, TexCoords tc) {
+
+/// @param pos Pozycja kafla na ekranie (lewy dolny róg)
+/// @param tc Gdzie jest sprite na teksturze (w pikselach)
+/// @param ts Jakiej wielkości tile wyświetlić na ekranie (rozmiar quada)
+void Renderer::DrawSprite(Position pos, TexCoords tc, Size size) {
   const double tex_width = 1024;
   const double tex_height = 1024;
 
@@ -46,12 +50,16 @@ void Renderer::DrawSprite(Position pos, TexCoords tc) {
 
   glBegin(GL_QUADS);
   glTexCoord2f(tc_left,  tc_bottom);   glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height);
-  glTexCoord2f(tc_right, tc_bottom);   glVertex2f(pos.x*m_tile_width + m_tile_width, pos.y*m_tile_height);
-  glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x*m_tile_width + m_tile_width, pos.y*m_tile_height + m_tile_height);
-  glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height + m_tile_height);
+  glTexCoord2f(tc_right, tc_bottom);   glVertex2f(pos.x*m_tile_width + size.width,   pos.y*m_tile_height);
+  glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x*m_tile_width + size.width,   pos.y*m_tile_height + size.height);
+  glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height + size.height);
   glEnd();
+
 }
 
+void Renderer::DrawSprite(Position pos, TexCoords tc) {
+  DrawSprite(pos, tc, Size(m_tile_width, m_tile_height));
+}
 
 /* kod poniższej funkcji został ściągnięty z:
    http://michalis.ii.uni.wroc.pl/~michalis/teaching/pgk/c/sdl_utils.c

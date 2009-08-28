@@ -4,6 +4,8 @@
 #include "StdAfx.h"
 #include "Map.h"
 #include "Object.h"
+#include "Hud.h"
+
 // #include "Player.h"
 
 
@@ -24,6 +26,7 @@ private:
   MapPtr m_map;
   std::vector<ObjectPtr> m_objects;   // enemies, fire, bomb, ups
 //   std::vector<PlayerPtr> m_players;
+  HudPtr m_hud;
 };
 
 
