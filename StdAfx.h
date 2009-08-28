@@ -8,7 +8,10 @@
 #include <vector>
 #include <map>
 
+#include <algorithm>
+
 #include <boost/shared_ptr.hpp>
+#include <boost/bind.hpp>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>

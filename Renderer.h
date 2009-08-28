@@ -9,7 +9,8 @@
 class Renderer : boost::noncopyable {
 public:
   void LoadTexture(std::string filename);
-  void DrawSprite(Position pos, TexCoords texs);
+  void DrawSprite(Position pos, TexCoords tc);
+  void SetTileSize(double width, double height)  { m_tile_width = width; m_tile_height = height; }
   
   static Renderer& Get() {
     static Renderer s_instance;
@@ -18,6 +19,10 @@ public:
 
 protected:
   SDL_Surface* flip( SDL_Surface *in, bool x, bool y, bool rgba );
+
+private:
+  double m_tile_width;
+  double m_tile_height;
 };
 
 #endif

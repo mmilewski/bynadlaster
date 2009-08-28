@@ -1,5 +1,6 @@
 #include "Renderer.h"
 
+
 void Renderer::LoadTexture(std::string filename) {
   SDL_Surface* orgImage = IMG_Load(filename.c_str());
   if (!orgImage) {
@@ -31,12 +32,23 @@ void Renderer::LoadTexture(std::string filename) {
   SDL_FreeSurface(image);
 }
 
-void Renderer::DrawSprite(Position pos, TexCoords texs) {
+void Renderer::DrawSprite(Position pos, TexCoords tc) {
+  const double tex_width = 1024;
+  const double tex_height = 1024;
+
+  // UWAGA. programy graficzne zwykle umieszczają początek układu współrzędnych w
+  // lewym górnym rogu a texcoord (0,0) oznacza lewy dolny narożnik, więc drugi
+  // argument TexCoord należy odjąć od wysokości tekstury. Life is life ;)
+  const double tc_top = (tex_height - tc.bottom + tc.height)/tex_height;
+  const double tc_right = (tc.left + tc.width)/tex_width;
+  const double tc_left = tc.left/tex_width;
+  const double tc_bottom = 1-tc.bottom/tex_height;
+
   glBegin(GL_QUADS);
-  glTexCoord2f(texs.left,              texs.bottom);                glVertex2f(pos.x,             pos.y);
-  glTexCoord2f(texs.left + texs.width, texs.bottom);                glVertex2f(pos.x + pos.width, pos.y);
-  glTexCoord2f(texs.left + texs.width, texs.bottom + texs.height);  glVertex2f(pos.x + pos.width, pos.y + pos.height);
-  glTexCoord2f(texs.left,              texs.bottom + texs.height);  glVertex2f(pos.x,             pos.y + pos.height);
+  glTexCoord2f(tc_left,  tc_bottom);   glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height);
+  glTexCoord2f(tc_right, tc_bottom);   glVertex2f(pos.x*m_tile_width + m_tile_width, pos.y*m_tile_height);
+  glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x*m_tile_width + m_tile_width, pos.y*m_tile_height + m_tile_height);
+  glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height + m_tile_height);
   glEnd();
 }
 

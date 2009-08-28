@@ -71,7 +71,10 @@ void App::InitGl() {
   glShadeModel(GL_SMOOTH);
   glClearColor(0.0, 0.0, 0.0, 1.0);
   glEnable(GL_TEXTURE_2D);
-  Resize( m_window_width, m_window_height );
+
+  glEnable(GL_ALPHA_TEST);
+  glAlphaFunc(GL_GREATER, 0.5);
+  Resize(m_window_width, m_window_height);
 }
 
 

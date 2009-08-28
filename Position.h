@@ -4,14 +4,12 @@
 
 struct Position {
 
-  explicit Position(double x, double y, double width, double height)
-    : x(x), y(y), width(width), height(height) {
+  explicit Position(double x, double y)
+    : x(x), y(y) {
     }
 
   double x;
   double y;
-  double width;
-  double height;
 };
 
 #endif
