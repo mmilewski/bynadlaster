@@ -12,7 +12,6 @@ Map::Map(size_t width, size_t height)
       m_map[y][x] = FT::Floor;
     }
   }
-
 }
 
 
@@ -89,7 +88,5 @@ void Map::DrawBorder() {
   for (size_t i = 0; i < GetWidth()+2; ++i) {
     Renderer::Get().DrawSprite(Position(2 + i, 0), TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0));
   }
-
-  
   
 }

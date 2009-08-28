@@ -4,9 +4,8 @@
 #include "StdAfx.h"
 #include "Map.h"
 #include "Object.h"
+#include "Player.h"
 #include "Hud.h"
-
-// #include "Player.h"
 
 
 class Game {
@@ -25,7 +24,7 @@ private:
   bool m_is_done;
   MapPtr m_map;
   std::vector<ObjectPtr> m_objects;   // enemies, fire, bomb, ups
-//   std::vector<PlayerPtr> m_players;
+  std::vector<PlayerPtr> m_players;
   HudPtr m_hud;
 };
 
