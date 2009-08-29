@@ -11,7 +11,7 @@ Game::Game()
   : m_is_done(false) {
   m_map.reset(new Map(g_max_map_width, g_max_map_height));
   m_hud.reset(new Hud());
-  m_players.push_back(PlayerPtr(new Player(Position(8,7))));
+  m_players.push_back(PlayerPtr(new Player(Position(8,7), PT::White)));
 
   Renderer::Get().LoadTexture("big_dyna.png");
 
@@ -104,11 +104,45 @@ void Game::Draw() {
 
 
 void Game::HandleInput(const SDL_Event& event) {
+  if (ProcessGameInput(event)) return;
+  if (ProcessPlayersInput(event)) return;
+}
+
+
+bool Game::ProcessGameInput(const SDL_Event& event) {
+  if (event.type == SDL_KEYDOWN) {
+    if (event.key.keysym.sym == SDLK_1) {
+      m_players.at(0)->SetType(PT::White);
+      return true;
+    }
+    else if (event.key.keysym.sym == SDLK_2) {
+      m_players.at(0)->SetType(PT::Green);
+      return true;
+    }
+    else if (event.key.keysym.sym == SDLK_3) {
+      m_players.at(0)->SetType(PT::Red);
+      return true;
+    }
+    else if (event.key.keysym.sym == SDLK_4) {
+      m_players.at(0)->SetType( PT::Blue);
+      return true;
+    }
+    else if (event.key.keysym.sym == SDLK_RETURN) {
+      m_players.at(0)->SetDie(!m_players.at(0)->IsDying());
+      return true;
+    }
+  }
+  return false;
+}
+
+
+bool Game::ProcessPlayersInput(const SDL_Event& event) {
   if (event.type == SDL_KEYDOWN) {
     for (size_t p = 0; p < m_players.size(); ++p) {
       for (size_t i = 0; i < PA::ActionsCount; ++i) {
 	if (g_player_control[p][i] == event.key.keysym.sym) {
 	  m_players.at(p)->PerformAction(PA::PlayerAction(i));
+	  return true;
 	}
       }
     }
@@ -118,8 +152,10 @@ void Game::HandleInput(const SDL_Event& event) {
       for (size_t i = 0; i < PA::ActionsCount; ++i) {
 	if (g_player_control[p][i] == event.key.keysym.sym) {
 	  m_players.at(p)->StopAction(PA::PlayerAction(i));
+	  return true;
 	}
       }
     }
   }
+  return false;
 }

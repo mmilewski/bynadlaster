@@ -7,11 +7,20 @@
 
 class App {
 public:
+  explicit App() {
+    Init();
+  }
+
+  void Run();
+
+
+protected:
   void CreateWindow(int width, int height, int depth, bool fullscreen);
   void Resize(int width, int height);
   void ProcessEvents();
+  bool ProcessKey(const SDL_Event& event);
   void InitGl();
-  void Run();
+  void Init();
 
 protected:
   /**

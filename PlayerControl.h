@@ -3,7 +3,13 @@
 
 #include "StdAfx.h"
 
-namespace PA {
+
+//  (!) WARNING (!)
+// Don't even try to move this to Types.h.  It must be here because
+// the order of values is important (must be the same as int
+// g_player_control)
+struct PA {
+  // (!) NOTE (1)
   enum PlayerAction {
     None,
     GoRight,
@@ -14,7 +20,26 @@ namespace PA {
     
     ActionsCount
   };
-}
+
+
+  static void RegisterInLua(lua_State* lua_state) {
+    luabind::module(lua_state) [
+				luabind::class_<PA>("PA")
+				// (!) NOTE (1)
+				.enum_("FieldType") [
+						     luabind::value("None"	, PA::None),
+						     luabind::value("GoRight"	, PA::GoRight),
+						     luabind::value("GoLeft"	, PA::GoLeft),
+						     luabind::value("GoUp"	, PA::GoUp),
+						     luabind::value("GoDown"	, PA::GoDown),
+						     luabind::value("GoNowhere"	, PA::GoNowhere),
+
+						     luabind::value("ActionsCount", PA::ActionsCount)
+						     ]
+				];
+  }
+
+};
 
 
 // Action i is executed for player p by pressing g_player_control[p][i] 

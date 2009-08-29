@@ -20,11 +20,15 @@
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_image.h>
 
+#include <lua5.1/lua.hpp>
+#include <luabind/luabind.hpp>
+
 #include "Constants.h"
 #include "Types.h"
 #include "Position.h"
 #include "Direction.h"
 #include "TexCoords.h"
 #include "Size.h"
+#include "Lua.h"
 
 #endif

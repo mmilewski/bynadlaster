@@ -55,7 +55,9 @@ void App::ProcessEvents() {
       m_game->Finish();
     }
     else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-      m_game->HandleInput(event);
+      if (!ProcessKey(event)) {
+	m_game->HandleInput(event);
+      }
     }
     else if (event.type == SDL_MOUSEMOTION) {
       // ignorujemy mysz
@@ -66,6 +68,9 @@ void App::ProcessEvents() {
   }
 }
 
+void App::Init() {
+  Lua::Get(); // init the lua machine
+}
 
 void App::InitGl() {
   glShadeModel(GL_SMOOTH);
@@ -112,4 +117,13 @@ double App::GetDeltaTime() {
   }
 
   return dt;
+}
+
+
+bool App::ProcessKey(const SDL_Event& event) {
+  if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
+    Lua::Get().Reset();
+    return true;
+  }
+  return false;
 }

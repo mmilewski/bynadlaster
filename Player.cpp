@@ -2,16 +2,23 @@
 #include "Player.h"
 
 
-Player::Player(Position initial_position) 
+Player::Player(Position initial_position, PT::PlayerType type) 
   : m_position(initial_position),
     m_direction(0,0),
+    m_type(type),
+    m_current_action_start_time(SDL_GetTicks()),
+    m_is_dying(false),
     m_all_bomb_count(g_bomb_player_has_at_start),
     m_fire_range(g_fire_range_player_has_at_start) {
 }
 
 
 void Player::Draw() {
-  Renderer::Get().DrawSprite(m_position, TexCoords(0, 218, 20, 22));
+  Renderer::Get().DrawSprite(m_position, Lua::Get().GetPlayerSprite(GetType(), 
+								    GetDirection(), 
+								    IsDying(), 
+								    SDL_GetTicks() - m_current_action_start_time)
+			     );
 }
 
 
@@ -21,7 +28,6 @@ void Player::Update(double dt) {
 
 
 void Player::GivePowerup(PowerupPtr powerup) {
-  std::cout << "Powerup!\n";
   powerup->Affect(*this);
 }
 
@@ -58,6 +64,8 @@ AABB Player::GetNextAABB(double dt) const {
 
 
 void Player::PerformAction(PA::PlayerAction action) {
+  m_current_action_start_time = SDL_GetTicks();
+
   if (action == PA::GoLeft) {
     m_direction.SetX(-1);
   }
@@ -80,6 +88,8 @@ void Player::PerformAction(PA::PlayerAction action) {
 
 
 void Player::StopAction(PA::PlayerAction action) {
+  m_current_action_start_time = SDL_GetTicks();
+
   const double epsilon = 0.01;  // close to 0 but not 0. Just in case :)
   if (action == PA::GoLeft && m_direction.x()<epsilon) {
     m_direction.SetX(0);
