@@ -9,6 +9,8 @@ struct AABB {
     : min(min), max(max) {
   }
 
+  bool CollidesWith(const AABB& other);
+
   const Position& GetMin() const { return min; }
   const Position& GetMax() const { return max; }
 

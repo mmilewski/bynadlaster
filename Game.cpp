@@ -3,6 +3,8 @@
 #include "PlayerControl.h"
 #include "Game.h"
 #include "Map.h"
+#include "BombPowerup.h"
+#include "FireRangePowerup.h"
 
 
 Game::Game() 
@@ -21,6 +23,10 @@ Game::Game()
   m_objects.push_back(ObjectPtr(new Bomb(Position(3,1))));
   m_objects.push_back(ObjectPtr(new Bomb(Position(4,3))));
   m_objects.push_back(ObjectPtr(new Bomb(Position(5,6))));
+  m_objects.push_back(ObjectPtr(new BombPowerup(Position(4,6))));
+  m_objects.push_back(ObjectPtr(new BombPowerup(Position(3,8))));
+  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5,3))));
+  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(3,5))));
 }
 
 
@@ -29,13 +35,44 @@ void Game::Update(double dt) {
   m_map->Update(dt);
   std::for_each(m_objects.begin(), m_objects.end(), boost::bind(&Object::Update, _1, dt));
 
-  // ORDER NOTICE: First, check whether player can into move desired direction
-  // and if possible then update of his position (for_each below) is always correct
   BOOST_FOREACH( PlayerPtr& player, m_players ) {
     CheckIfPlayerCollidesWithMap(m_map, player, dt);
   }
 
+  BOOST_FOREACH( PlayerPtr& player, m_players ) {
+    BOOST_FOREACH( ObjectPtr& object, m_objects ) {
+      if( !object->IsAlive() )      // object should be swept, not processed
+        continue;
+      switch(object->GetType()) {
+      case OT::Bomb:
+        if(player->GetNextAABB(dt).CollidesWith(object->GetAABB())) {
+          player->PerformAction(PA::GoNowhere);
+        }
+        break;
+//       case OT::Fire:
+//         player->Burnt();
+//         break;
+//       case OT::Enemy:
+//         player->KilledByEnemy();
+//         break;
+      case OT::Powerup:
+        if(player->GetAABB().CollidesWith(object->GetAABB())) {
+          player->GivePowerup(boost::dynamic_pointer_cast<Powerup>(object));
+          object->SetAliveFlag(false);
+        }
+        break;
+      default:
+        std::cerr << "collision player<->" << object->GetType() << " unsupported\n";
+      }
+    }
+  }
   std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Update, _1, dt));
+
+  std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
+            << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
+
+  m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), !boost::bind(&Object::IsAlive,_1)),
+                  m_objects.end());
 }
 
 

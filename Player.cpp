@@ -4,7 +4,9 @@
 
 Player::Player(Position initial_position) 
   : m_position(initial_position),
-    m_direction(0,0) {
+    m_direction(0,0),
+    m_all_bomb_count(g_bomb_player_has_at_start),
+    m_fire_range(g_fire_range_player_has_at_start) {
 }
 
 
@@ -15,6 +17,12 @@ void Player::Draw() {
 
 void Player::Update(double dt) {
   m_position = GetNextPosition(dt);
+}
+
+
+void Player::GivePowerup(PowerupPtr powerup) {
+  std::cout << "Powerup!\n";
+  powerup->Affect(*this);
 }
 
 

@@ -11,4 +11,13 @@ namespace FT {
 }
 
 
+namespace OT {
+  enum ObjectType {
+    Enemy,
+    Fire,
+    Powerup,
+    Bomb
+  };
+}
+
 #endif

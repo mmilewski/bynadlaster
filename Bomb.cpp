@@ -4,7 +4,9 @@
 
 
 Bomb::Bomb(Position position)
-  : m_anim_frame_num(0), m_position(position), m_time_from_last_frame_switch(.0) {
+  : m_anim_frame_num(0), m_position(position), m_time_from_last_frame_switch(.0),
+    m_aabb(Position(position), Position(position.x+1, position.y+1)) {
+  SetAliveFlag(true);
 }
 
 void Bomb::DoDraw() {
