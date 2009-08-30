@@ -32,13 +32,18 @@ void Map::Update(double /* dt */) {
 
 
 void Map::Load() {
+}
 
+
+Position Map::PositionToPositionOnMap(const Position& position) const {
+  return Position(floor(position.x-3), floor(position.y-1));
 }
 
 
 bool Map::IsFieldStandable(const Position& field_position) const {
-  const int x = floor(field_position.x-3);
-  const int y = floor(field_position.y-1);
+  Position on_map_pos = PositionToPositionOnMap(field_position);
+  const int x = on_map_pos.x;
+  const int y = on_map_pos.y;
   if (x<0 || static_cast<unsigned>(x)>=GetWidth() || y<0 || static_cast<unsigned>(y)>=GetHeight())
     return false;
 

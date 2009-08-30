@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Player.h"
+#include "BombCreator.h"
 
 
 Player::Player(Position initial_position, PT::PlayerType type) 
@@ -14,11 +15,11 @@ Player::Player(Position initial_position, PT::PlayerType type)
 
 
 void Player::Draw() {
-  Renderer::Get().DrawSprite(m_position, Lua::Get().GetPlayerSprite(GetType(), 
-								    GetDirection(), 
-								    IsDying(), 
-								    SDL_GetTicks() - m_current_action_start_time)
-			     );
+  TexCoords tc = Lua::Get().GetPlayerSprite(GetType(), 
+                                            GetDirection(), 
+                                            IsDying(), 
+                                            SDL_GetTicks() - m_current_action_start_time);
+  Renderer::Get().DrawSprite(GetPosition(), tc);
 }
 
 
@@ -34,8 +35,10 @@ void Player::GivePowerup(PowerupPtr powerup) {
 
 Position Player::GetNextPosition(double dt) const {
   double speed = 5;
-  return Position(m_position.x + m_direction.x() * dt * speed,
-		  m_position.y + m_direction.y() * dt * speed);
+  Position pos = GetPosition();
+  Direction dir = GetDirection();
+  return Position(pos.x + dir.x() * dt * speed,
+		  pos.y + dir.y() * dt * speed);
 }
 
 
@@ -81,6 +84,9 @@ void Player::PerformAction(PA::PlayerAction action) {
   else if (action == PA::GoNowhere) {
     m_direction.Set(0,0);
   }
+  else if (action == PA::PlaceBomb) {
+    AddCreator(CreatorPtr(new BombCreator(GetPosition())));
+  }
   else {
     
   }
@@ -91,16 +97,16 @@ void Player::StopAction(PA::PlayerAction action) {
   m_current_action_start_time = SDL_GetTicks();
 
   const double epsilon = 0.01;  // close to 0 but not 0. Just in case :)
-  if (action == PA::GoLeft && m_direction.x()<epsilon) {
+  if (action == PA::GoLeft && GetDirection().x()<epsilon) {
     m_direction.SetX(0);
   }
-  else if (action == PA::GoRight && m_direction.x()>epsilon) {
+  else if (action == PA::GoRight && GetDirection().x()>epsilon) {
     m_direction.SetX(0);
   }
-  else if (action == PA::GoUp && m_direction.y()>epsilon) {
+  else if (action == PA::GoUp && GetDirection().y()>epsilon) {
     m_direction.SetY(0);
   }
-  else if (action == PA::GoDown && m_direction.y()<epsilon) {
+  else if (action == PA::GoDown && GetDirection().y()<epsilon) {
     m_direction.SetY(0);
   }
   else {

@@ -40,7 +40,14 @@ public:
   void Die() { SetDie(true); }
   void SetDie(bool die) { m_is_dying = die; }
 
+  std::list<CreatorPtr>& GetAllCreators()  { return m_creators; }
+
+protected:
+  void AddCreator(CreatorPtr creator)  { m_creators.insert(m_creators.end(), creator); }
+
 private:
+  std::list<CreatorPtr> m_creators;
+
   Position m_position;
   Direction m_direction;
 

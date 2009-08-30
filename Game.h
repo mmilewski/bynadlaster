@@ -20,6 +20,9 @@ public:
 
   void HandleInput(const SDL_Event& event);
 
+  MapPtr GetMap() { return m_map; }
+  void AddObject(ObjectPtr object) { m_objects.push_back(object); }
+
 protected:
   void CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt);
   bool ProcessGameInput(const SDL_Event& event);

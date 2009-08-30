@@ -8,6 +8,8 @@ struct Position {
     : x(x), y(y) {
   }
 
+  bool operator==(const Position& other)  { return x==other.x && y==other.y; }
+
   double x;
   double y;
 };

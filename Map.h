@@ -17,6 +17,8 @@ public:
   size_t GetWidth() const { return m_width; }
   size_t GetHeight() const { return m_height; }
 
+  Position PositionToPositionOnMap(const Position& position) const;
+
   bool IsFieldStandable(const Position& field_position) const;
 
 protected:

@@ -1,10 +1,12 @@
 #include "Renderer.h"
-#include "Bomb.h"
 #include "PlayerControl.h"
 #include "Game.h"
 #include "Map.h"
+#include "Creator.h"
+#include "Powerup.h"
 #include "BombPowerup.h"
 #include "FireRangePowerup.h"
+#include "Bomb.h"
 
 
 Game::Game() 
@@ -12,8 +14,9 @@ Game::Game()
   m_map.reset(new Map(g_max_map_width, g_max_map_height));
   m_hud.reset(new Hud());
   m_players.push_back(PlayerPtr(new Player(Position(8,7), PT::White)));
+  m_players.push_back(PlayerPtr(new Player(Position(6,7), PT::Blue)));
 
-  Renderer::Get().LoadTexture("big_dyna.png");
+  Renderer::Get().LoadTexture("big_byna.png");
 
   // UWAGA. rozmiary kafla na ekranie. Jeżeli ekran nie będzie kwadratowy, to kafle również
   // nie będą kwadratowe. Najlepiej byłoby mieć dostęp do parametru ratio (width/height)
@@ -41,11 +44,12 @@ void Game::Update(double dt) {
 
   BOOST_FOREACH( PlayerPtr& player, m_players ) {
     BOOST_FOREACH( ObjectPtr& object, m_objects ) {
-      if( !object->IsAlive() )      // object should be swept, not processed
+      if(!object->IsAlive())      // object should be swept, not processed
         continue;
       switch(object->GetType()) {
       case OT::Bomb:
-        if(player->GetNextAABB(dt).CollidesWith(object->GetAABB())) {
+        #warning check only the part of aabb - collision based on player direction
+        if(player->GetNextAABB(dt).CollidesUsingDirectionWith(object->GetAABB(), player->GetDirection())) {
           player->PerformAction(PA::GoNowhere);
         }
         break;
@@ -68,11 +72,25 @@ void Game::Update(double dt) {
   }
   std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Update, _1, dt));
 
-  std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
-            << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
+//   std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
+//             << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
 
   m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), !boost::bind(&Object::IsAlive,_1)),
                   m_objects.end());
+
+  // collect creators from objects && players together and run them all
+  std::list<CreatorPtr> all_creators;
+  BOOST_FOREACH( ObjectPtr obj, m_objects ) {
+    std::list<CreatorPtr>& obj_creators = obj->GetAllCreators();
+    all_creators.splice(all_creators.end(), obj_creators);
+  }
+  BOOST_FOREACH( PlayerPtr plr, m_players ) {
+    std::list<CreatorPtr>& plr_creators = plr->GetAllCreators();
+    all_creators.splice(all_creators.end(), plr_creators);
+  }
+  BOOST_FOREACH( CreatorPtr creator, all_creators ) {
+    creator->Create(*this);
+  }
 }
 
 
@@ -140,6 +158,7 @@ bool Game::ProcessPlayersInput(const SDL_Event& event) {
   if (event.type == SDL_KEYDOWN) {
     for (size_t p = 0; p < m_players.size(); ++p) {
       for (size_t i = 0; i < PA::ActionsCount; ++i) {
+        // if player p handles action i then send this action to him
 	if (g_player_control[p][i] == event.key.keysym.sym) {
 	  m_players.at(p)->PerformAction(PA::PlayerAction(i));
 	  return true;

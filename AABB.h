@@ -1,8 +1,8 @@
 #ifndef __AABB_H_INCLUDED__
 #define __AABB_H_INCLUDED__
 
+#include "StdAfx.h"
 
-#include "Position.h"
 
 struct AABB {
   explicit AABB(const Position& min, const Position& max)
@@ -10,6 +10,7 @@ struct AABB {
   }
 
   bool CollidesWith(const AABB& other);
+  bool CollidesUsingDirectionWith(const AABB& other, const Direction& dir);
 
   const Position& GetMin() const { return min; }
   const Position& GetMax() const { return max; }
