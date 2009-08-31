@@ -1,20 +1,24 @@
 #include "Renderer.h"
-#include "PlayerControl.h"
+#include "Bomb.h"
 #include "Game.h"
 #include "Map.h"
 #include "Creator.h"
 #include "Powerup.h"
 #include "BombPowerup.h"
 #include "FireRangePowerup.h"
-#include "Bomb.h"
+
+#include "PlayerControllers.h"
 
 
 Game::Game() 
   : m_is_done(false) {
   m_map.reset(new Map(g_max_map_width, g_max_map_height));
   m_hud.reset(new Hud());
-  m_players.push_back(PlayerPtr(new Player(Position(8,7), PT::White)));
-  m_players.push_back(PlayerPtr(new Player(Position(6,7), PT::Blue)));
+
+  m_players.push_back(PlayerPtr(new Player(0,  // id
+					   Position(8,7), 
+					   PT::White, 
+					   PlayerControllerPtr(new PlayerControllerKb()))));
 
   Renderer::Get().LoadTexture("big_byna.png");
 
@@ -36,14 +40,15 @@ Game::Game()
 void Game::Update(double dt) {
   m_hud->Update(dt);
   m_map->Update(dt);
+
   std::for_each(m_objects.begin(), m_objects.end(), boost::bind(&Object::Update, _1, dt));
 
-  BOOST_FOREACH( PlayerPtr& player, m_players ) {
+  BOOST_FOREACH(PlayerPtr& player, m_players) {
     CheckIfPlayerCollidesWithMap(m_map, player, dt);
   }
 
-  BOOST_FOREACH( PlayerPtr& player, m_players ) {
-    BOOST_FOREACH( ObjectPtr& object, m_objects ) {
+  BOOST_FOREACH(PlayerPtr& player, m_players) {
+    BOOST_FOREACH(ObjectPtr& object, m_objects) {
       if(!object->IsAlive())      // object should be swept, not processed
         continue;
       switch(object->GetType()) {
@@ -70,7 +75,9 @@ void Game::Update(double dt) {
       }
     }
   }
-  std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Update, _1, dt));
+
+  DataForController data_for_controller;
+  std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Update, _1, data_for_controller, dt));
 
 //   std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
 //             << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
@@ -121,13 +128,14 @@ void Game::Draw() {
 }
 
 
-void Game::HandleInput(const SDL_Event& event) {
-  if (ProcessGameInput(event)) return;
-  if (ProcessPlayersInput(event)) return;
+bool Game::HandleInput(const SDL_Event& event) {
+  if (HandleInputGame(event)) return true;
+  if (HandleInputPlayers(event)) return true;
+  return false;
 }
 
 
-bool Game::ProcessGameInput(const SDL_Event& event) {
+bool Game::HandleInputGame(const SDL_Event& event) {
   if (event.type == SDL_KEYDOWN) {
     if (event.key.keysym.sym == SDLK_1) {
       m_players.at(0)->SetType(PT::White);
@@ -154,27 +162,11 @@ bool Game::ProcessGameInput(const SDL_Event& event) {
 }
 
 
-bool Game::ProcessPlayersInput(const SDL_Event& event) {
-  if (event.type == SDL_KEYDOWN) {
-    for (size_t p = 0; p < m_players.size(); ++p) {
-      for (size_t i = 0; i < PA::ActionsCount; ++i) {
-        // if player p handles action i then send this action to him
-	if (g_player_control[p][i] == event.key.keysym.sym) {
-	  m_players.at(p)->PerformAction(PA::PlayerAction(i));
-	  return true;
-	}
-      }
-    }
-  }
-  if (event.type == SDL_KEYUP) {
-    for (size_t p = 0; p < m_players.size(); ++p) {
-      for (size_t i = 0; i < PA::ActionsCount; ++i) {
-	if (g_player_control[p][i] == event.key.keysym.sym) {
-	  m_players.at(p)->StopAction(PA::PlayerAction(i));
-	  return true;
-	}
-      }
-    }
+bool Game::HandleInputPlayers(const SDL_Event& event) {
+  for (size_t player_id = 0; player_id < m_players.size(); ++player_id) {
+    if (m_players.at(player_id)->HandleInput(event)) {
+     return true;
+    }      
   }
   return false;
 }

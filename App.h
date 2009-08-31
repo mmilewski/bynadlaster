@@ -18,7 +18,7 @@ protected:
   void CreateWindow(int width, int height, int depth, bool fullscreen);
   void Resize(int width, int height);
   void ProcessEvents();
-  bool ProcessKey(const SDL_Event& event);
+  bool HandleInput(const SDL_Event& event);
   void InitGl();
   void Init();
 

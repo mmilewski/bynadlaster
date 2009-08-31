@@ -31,7 +31,20 @@ struct OT {
     Powerup,
     Bomb
   };
-#warning Dodac RegisterInLua do ObjectType
+
+
+  static void RegisterInLua(lua_State* lua_state) {
+    luabind::module(lua_state) [
+				luabind::class_<OT>("OT")
+				.enum_("ObjectType") [
+						      luabind::value("Enemy",   OT::Enemy),
+						      luabind::value("Fire",    OT::Fire),
+						      luabind::value("Powerup", OT::Powerup),
+						      luabind::value("Bomb",    OT::Bomb)
+						      ]
+				];
+  }
+
 };
 
 

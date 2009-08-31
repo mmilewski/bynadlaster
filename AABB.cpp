@@ -27,9 +27,11 @@ bool AABB::CollidesUsingDirectionWith(const AABB& other, const Direction& dir) {
   const double o_min_y = other.GetMin().y;
   const double o_max_y = other.GetMax().y;
 
-  if( t_min_x>o_max_x || t_max_x<o_min_x || t_min_y>o_max_y || t_max_y<o_min_y )
+  if (t_min_x>o_max_x || t_max_x<o_min_x || t_min_y>o_max_y || t_max_y<o_min_y) {
     return false;  // no collision
+  }
 
 #warning implement CollidesUsingDirectionWith
-  
+
+  return true; // was this missing??
 }

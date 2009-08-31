@@ -12,14 +12,21 @@ struct PA {
   // (!) NOTE (1)
   enum PlayerAction {
     None,
+
     GoRight,
     GoLeft,
     GoUp,
     GoDown,
     PlaceBomb,
-//     DetonateBombs,
+
     GoNowhere,
     
+    FirstStopAction,
+    StopGoRight,
+    StopGoLeft,
+    StopGoUp,
+    StopGoDown,
+
     ActionsCount
   };
 
@@ -29,12 +36,19 @@ struct PA {
 				luabind::class_<PA>("PA")
 				// (!) NOTE (1)
 				.enum_("FieldType") [
-						     luabind::value("None"	, PA::None),
-						     luabind::value("GoRight"	, PA::GoRight),
-						     luabind::value("GoLeft"	, PA::GoLeft),
-						     luabind::value("GoUp"	, PA::GoUp),
-						     luabind::value("GoDown"	, PA::GoDown),
-						     luabind::value("GoNowhere"	, PA::GoNowhere),
+						     luabind::value("None"     , PA::None),
+						     luabind::value("GoRight"  , PA::GoRight),
+						     luabind::value("GoLeft"   , PA::GoLeft),
+						     luabind::value("GoUp"     , PA::GoUp),
+						     luabind::value("GoDown"   , PA::GoDown),
+						     luabind::value("GoNowhere", PA::GoNowhere),
+						     luabind::value("PlaceBomb", PA::GoNowhere),
+
+						     luabind::value("FirstStopAction", PA::FirstStopAction),
+						     luabind::value("StopGoRight"    , PA::StopGoRight),
+						     luabind::value("StopGoLeft"     , PA::StopGoLeft),
+						     luabind::value("StopGoUp"       , PA::StopGoUp),
+						     luabind::value("StopGoDown"     , PA::StopGoDown),
 
 						     luabind::value("ActionsCount", PA::ActionsCount)
 						     ]
@@ -45,10 +59,9 @@ struct PA {
 
 
 // Action i is executed for player p by pressing g_player_control[p][i] 
-const size_t g_controlled_players_count = 2;
+const size_t g_controlled_players_count = 1;
 const int g_player_control[g_controlled_players_count][PA::ActionsCount] = { 
   { 0, SDLK_RIGHT, SDLK_LEFT, SDLK_UP, SDLK_DOWN, SDLK_o }, // player 0
-  { 0, SDLK_d, SDLK_a, SDLK_w, SDLK_s, SDLK_q }  // player 1
 };
 
 

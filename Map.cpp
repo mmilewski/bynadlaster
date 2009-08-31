@@ -32,8 +32,8 @@ void Map::Update(double /* dt */) {
 
 
 void Map::Load() {
-}
 
+}
 
 Position Map::PositionToPositionOnMap(const Position& position) const {
   return Position(floor(position.x-3), floor(position.y-1));

@@ -1,18 +1,19 @@
 #ifndef __PLAYER_H_INCLUDED__
 #define __PLAYER_H_INCLUDED__
 
-#include "PlayerControl.h"
+#include "PlayerAction.h"
 #include "StdAfx.h"
 #include "AABB.h"
 #include "Powerup.h"
+#include "PlayerController.h"
 
 
 class Player {
 public:
-  explicit Player(Position initial_position, PT::PlayerType type);
+  explicit Player(size_t id, Position initial_position, PT::PlayerType type, PlayerControllerPtr controller);
 
   void Draw();
-  void Update(double dt);
+  void Update(const DataForController& data, double dt);
   void PerformAction(PA::PlayerAction action);
   void StopAction(PA::PlayerAction action);
 
@@ -25,6 +26,8 @@ public:
 //   void KilledByEnemy();
 //   void Burnt();
 
+  bool HandleInput(const SDL_Event& event);
+
   // getters
   const Position& GetPosition() const { return m_position; }
   Position GetNextPosition(double dt) const;
@@ -33,8 +36,10 @@ public:
   AABB GetAABB() const;
   AABB GetNextAABB(double dt) const;
 
-  void SetType(PT::PlayerType new_type) { m_type = new_type; }
+  size_t GetId() const { return m_id; }
+
   PT::PlayerType GetType() const { return m_type; }
+  void SetType(PT::PlayerType new_type) { m_type = new_type; }
   
   bool IsDying() const { return m_is_dying; }
   void Die() { SetDie(true); }
@@ -45,7 +50,15 @@ public:
 protected:
   void AddCreator(CreatorPtr creator)  { m_creators.insert(m_creators.end(), creator); }
 
+  PlayerControllerPtr GetController() const { return m_controller; }
+  void SetController(PlayerControllerPtr new_controller) { 
+    m_controller = new_controller;
+    m_controller->SetPlayerId(GetId());
+  }
+
 private:
+  size_t m_id; // index in players vector (in game)
+
   std::list<CreatorPtr> m_creators;
 
   Position m_position;
@@ -58,6 +71,8 @@ private:
 
   size_t m_all_bomb_count;     // number of bomb that player can use at all (at all, NOT now)
   size_t m_fire_range;         // how meny fields player's bomb's fire covers
+
+  PlayerControllerPtr m_controller; // chooses action for player to perform
 };
 
 typedef boost::shared_ptr<Player> PlayerPtr;

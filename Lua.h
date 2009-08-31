@@ -2,7 +2,7 @@
 #define __LUA_H_INCLUDED__
 
 #include <boost/noncopyable.hpp>
-#include "PlayerControl.h"
+#include "PlayerAction.h"
 #include "StdAfx.h"
 
 #include <lua5.1/lua.hpp>

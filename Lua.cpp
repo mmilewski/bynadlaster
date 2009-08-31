@@ -70,4 +70,5 @@ void Lua::LoadTypes() {
   FT::RegisterInLua(m_lua_state);
   PT::RegisterInLua(m_lua_state);
   PA::RegisterInLua(m_lua_state);
+  OT::RegisterInLua(m_lua_state);
 }

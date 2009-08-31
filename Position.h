@@ -2,7 +2,9 @@
 #define __POSITION_H_INCLUDED__
 
 
-struct Position {
+#include <boost/operators.hpp>
+
+struct Position : boost::equality_comparable<Position> {
 
   explicit Position(double x, double y)
     : x(x), y(y) {

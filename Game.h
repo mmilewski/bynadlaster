@@ -18,15 +18,15 @@ public:
   bool IsDone() const { return m_is_done; }
   void Finish() { m_is_done = true; } 
 
-  void HandleInput(const SDL_Event& event);
+  bool HandleInput(const SDL_Event& event);
 
   MapPtr GetMap() { return m_map; }
   void AddObject(ObjectPtr object) { m_objects.push_back(object); }
 
 protected:
   void CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt);
-  bool ProcessGameInput(const SDL_Event& event);
-  bool ProcessPlayersInput(const SDL_Event& event);
+  bool HandleInputGame(const SDL_Event& event);
+  bool HandleInputPlayers(const SDL_Event& event);
 
 private:
   bool m_is_done;

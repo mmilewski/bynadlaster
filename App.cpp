@@ -55,7 +55,7 @@ void App::ProcessEvents() {
       m_game->Finish();
     }
     else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-      if (!ProcessKey(event)) {
+      if (!HandleInput(event)) {
 	m_game->HandleInput(event);
       }
     }
@@ -120,7 +120,7 @@ double App::GetDeltaTime() {
 }
 
 
-bool App::ProcessKey(const SDL_Event& event) {
+bool App::HandleInput(const SDL_Event& event) {
   if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
     Lua::Get().Reset();
     return true;
