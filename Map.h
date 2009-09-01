@@ -20,6 +20,7 @@ public:
   Position PositionToPositionOnMap(const Position& position) const;
 
   bool IsFieldStandable(const Position& field_position) const;
+  bool IsFieldStandable(double posx, double posy) const;
 
 protected:
   void DrawTile(size_t x, size_t y, FT::FieldType type);

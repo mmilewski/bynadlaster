@@ -27,9 +27,11 @@ Game::Game()
   // okna - wtedy wystarczy ustawić np. tile_width=window_ratio/GetWidth()
   Renderer::Get().SetTileSize(Size(1.0/g_tiles_on_screen_in_x, 1.0/g_tiles_on_screen_in_y));
 
-  m_objects.push_back(ObjectPtr(new Bomb(Position(3,1))));
-  m_objects.push_back(ObjectPtr(new Bomb(Position(4,3))));
-  m_objects.push_back(ObjectPtr(new Bomb(Position(5,6))));
+  const size_t pid = m_players.at(0)->GetId();
+  const size_t range = m_players.at(0)->GetFireRange();
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(3,1),range)));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(4,3),range)));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(5,6),range)));
   m_objects.push_back(ObjectPtr(new BombPowerup(Position(4,6))));
   m_objects.push_back(ObjectPtr(new BombPowerup(Position(3,8))));
   m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5,3))));
@@ -53,8 +55,7 @@ void Game::Update(double dt) {
         continue;
       switch(object->GetType()) {
       case OT::Bomb:
-        #warning check only the part of aabb - collision based on player direction
-        if(player->GetNextAABB(dt).CollidesUsingDirectionWith(object->GetAABB(), player->GetDirection())) {
+        if(player->GetNextAABB(dt).IntersectsUsingDirectionWith(object->GetAABB(), player->GetDirection())) {
           player->PerformAction(PA::GoNowhere);
         }
         break;

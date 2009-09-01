@@ -16,7 +16,8 @@ public:
     m_y = y;
     
     double mag = sqrt(m_x*m_x + m_y*m_y);
-    if (mag != 0.0) {
+    const double epsilon = 0.00001;
+    if (mag > epsilon) {
       m_x /= mag;
       m_y /= mag;
     }

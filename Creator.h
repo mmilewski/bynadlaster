@@ -1,8 +1,10 @@
 #ifndef __CREATOR_H_INCLUDED__
 #define __CREATOR_H_INCLUDED__
 
+#include "StdAfx.h"
 
 class Game;
+
 
 class Creator {
 public:

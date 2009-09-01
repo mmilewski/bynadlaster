@@ -12,4 +12,6 @@ const size_t g_max_players = 2;
 const size_t g_bomb_player_has_at_start = 3;
 const size_t g_fire_range_player_has_at_start = 2;
 
+const double g_bomb_time_to_live = 3.0;  // (in seconds)
+
 #endif

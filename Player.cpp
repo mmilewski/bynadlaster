@@ -60,11 +60,11 @@ Position Player::GetNextPosition(double dt) const {
 AABB Player::GetAABB() const {
   // bounding box is a bit less then player sprite
   Position min = GetPosition();
-  min.x += 0.1;
-  min.y += 0.1;
+  min.x += 0.05;
+  min.y += 0.05;
   Position max = GetPosition();
-  max.x += 0.9;
-  max.y += 0.9;
+  max.x += 0.95;
+  max.y += 0.95;
   return AABB(min,max);
 }
 
@@ -72,11 +72,11 @@ AABB Player::GetAABB() const {
 AABB Player::GetNextAABB(double dt) const {
   // bounding box is a bit less then player sprite
   Position min = GetNextPosition(dt);
-  min.x += 0.1;
-  min.y += 0.1;
+  min.x += 0.05;
+  min.y += 0.05;
   Position max = GetNextPosition(dt);
-  max.x += 0.9;
-  max.y += 0.9;
+  max.x += 0.95;
+  max.y += 0.95;
   return AABB(min,max);
 }
 
@@ -119,7 +119,7 @@ void Player::PerformAction(PA::PlayerAction action) {
   }
   // "Bomb" actions
   else if (action == PA::PlaceBomb) {
-    AddCreator(CreatorPtr(new BombCreator(GetPosition())));
+    AddCreator(CreatorPtr(new BombCreator(GetId(), GetPosition(), GetFireRange())));
   }
   // Other Actions
   else if (action == PA::None) {

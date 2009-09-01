@@ -4,6 +4,9 @@
 
 
 void FireRangePowerup::DoDraw() {
+  if(!IsAlive())
+    return;
+
   const double tile_width_in_px = 16.0;
   const double tile_height_in_px = 16.0;
   const int m_anim_frame_num = 0;
@@ -11,5 +14,8 @@ void FireRangePowerup::DoDraw() {
   Renderer::Get().DrawSprite(GetPosition(), tc);
 }
 
+
 void FireRangePowerup::DoUpdate(double /* dt */) {
+  if(!IsAlive())
+    return;
 }

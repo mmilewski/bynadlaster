@@ -51,6 +51,11 @@ bool Map::IsFieldStandable(const Position& field_position) const {
 }
 
 
+bool Map::IsFieldStandable(double posx, double posy) const {
+  return IsFieldStandable(Position(posx, posy));
+}
+
+
 void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
   Position tile_position(x+3, y+1);
 

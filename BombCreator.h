@@ -6,13 +6,15 @@
 
 class BombCreator : public Creator {
 public:
-  explicit BombCreator(Position initial_position);
+  explicit BombCreator(size_t owner_id, Position initial_position, size_t range);
   void Create(Game& game);
 
   const Position& GetPosition() const { return m_position; }
 
 private:
+  size_t m_owner_id;
   Position m_position;
+  size_t m_range;
 };
 
 #endif

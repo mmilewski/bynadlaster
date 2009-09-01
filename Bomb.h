@@ -6,7 +6,8 @@
 
 class Bomb : public Object {
 public :
-  explicit Bomb(Position position);
+  explicit Bomb(size_t owner_id, Position position, int explosion_range);
+  void Detonate();
     
 protected:
   void DoDraw();
@@ -20,6 +21,9 @@ private:
   Position m_position;
   double m_time_from_last_frame_switch;
   AABB m_aabb;
+  size_t m_owner_id;
+  size_t m_explision_range;
+  double m_living_time;
 };
 
 typedef boost::shared_ptr<Bomb> BombPtr;
