@@ -50,8 +50,8 @@ void Player::GivePowerup(PowerupPtr powerup) {
 
 Position Player::GetNextPosition(double dt) const {
   double speed = 5;
-  Position pos = GetPosition();
-  Direction dir = GetDirection();
+  const Position pos = GetPosition();
+  const Direction dir = GetDirection();
   return Position(pos.x + dir.x() * dt * speed,
 		  pos.y + dir.y() * dt * speed);
 }
@@ -59,24 +59,18 @@ Position Player::GetNextPosition(double dt) const {
 
 AABB Player::GetAABB() const {
   // bounding box is a bit less then player sprite
-  Position min = GetPosition();
-  min.x += 0.05;
-  min.y += 0.05;
-  Position max = GetPosition();
-  max.x += 0.95;
-  max.y += 0.95;
+  const Position pos = GetPosition();
+  const Position min = pos - Position( .45, .45);
+  const Position max = pos + Position( .45, .45);
   return AABB(min,max);
 }
 
 
 AABB Player::GetNextAABB(double dt) const {
   // bounding box is a bit less then player sprite
-  Position min = GetNextPosition(dt);
-  min.x += 0.05;
-  min.y += 0.05;
-  Position max = GetNextPosition(dt);
-  max.x += 0.95;
-  max.y += 0.95;
+  const Position pos = GetNextPosition(dt);
+  const Position min = pos - Position( .45, .45);
+  const Position max = pos + Position( .45, .45);
   return AABB(min,max);
 }
 
@@ -129,6 +123,7 @@ void Player::PerformAction(PA::PlayerAction action) {
     std::cerr << "Got unknown action! [" << action << "]\n";
   }
 }
+
 
 bool Player::HandleInput(const SDL_Event& event) {
   return GetController()->HandleInput(event);

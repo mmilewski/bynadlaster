@@ -6,7 +6,7 @@
 
 Bomb::Bomb(size_t owner_id, Position position, int explosion_range)
   : m_anim_frame_num(0), m_position(position), m_time_from_last_frame_switch(.0),
-    m_aabb(position+Position(.1,.1), position+Position(.9,.9)),
+    m_aabb(position-Position(.4,.4), position+Position(.4,.4)),
     m_owner_id(owner_id), m_explision_range(explosion_range), m_living_time(0) {
   SetAliveFlag(true);
 }

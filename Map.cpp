@@ -41,7 +41,7 @@ Position Map::PositionToPositionOnMap(const Position& position) const {
 
 
 bool Map::IsFieldStandable(const Position& field_position) const {
-  Position on_map_pos = PositionToPositionOnMap(field_position);
+  const Position on_map_pos = PositionToPositionOnMap(field_position);
   const int x = on_map_pos.x;
   const int y = on_map_pos.y;
   if (x<0 || static_cast<unsigned>(x)>=GetWidth() || y<0 || static_cast<unsigned>(y)>=GetHeight())
@@ -57,7 +57,7 @@ bool Map::IsFieldStandable(double posx, double posy) const {
 
 
 void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
-  Position tile_position(x+3, y+1);
+  const Position tile_position = Position(x+3, y+1);
 
   switch(type) {
   case FT::Floor:

@@ -8,12 +8,12 @@ void Renderer::LoadTexture(std::string filename) {
     return;
   }
   int bpp = orgImage->format->BytesPerPixel;
-  SDL_Surface* image = flip( orgImage, false, true, bpp==4?true:false);
+  SDL_Surface* image = flip(orgImage, false, true, bpp==4?true:false);
 
   GLuint textures[1];
   glGenTextures(1, textures);
   glBindTexture(GL_TEXTURE_2D, textures[0]);
-      
+
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -21,11 +21,11 @@ void Renderer::LoadTexture(std::string filename) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
   if (image->format->Amask) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h,
 		 0, GL_RGBA, GL_UNSIGNED_BYTE, image->pixels);
   }
   else {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->w, image->h,
 		 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
   }
 
@@ -54,12 +54,13 @@ void Renderer::DrawSprite(Position pos, TexCoords tc, Size size) {
   glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x*m_tile_width + size.width,   pos.y*m_tile_height + size.height);
   glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height + size.height);
   glEnd();
-
 }
+
 
 void Renderer::DrawSprite(Position pos, TexCoords tc) {
   DrawSprite(pos, tc, Size(m_tile_width, m_tile_height));
 }
+
 
 /* kod poniższej funkcji został ściągnięty z:
    http://michalis.ii.uni.wroc.pl/~michalis/teaching/pgk/c/sdl_utils.c

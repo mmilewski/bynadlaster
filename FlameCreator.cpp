@@ -21,37 +21,38 @@ void FlameCreator::Create(Game& game) {
   // add flames in each of four directions. Add a lot of small, collidable flames objects
   // and a not collidable FireRepresentations object (flame that players can see in game).
 
-  for (size_t i=0; i<m_range; ++i) {
-    if (map->IsFieldStandable(pos.x, pos.y+i)) {
-      ++up;
-      AddFlame(pos.x, pos.y+i);
-      AddFlame(pos.x, pos.y+i+.5);
-    }
-  }
+#warning implement creating flame
+//   for (size_t i=0; i<m_range; ++i) {
+//     if (map->IsFieldStandable(pos.x, pos.y+i)) {
+//       ++up;
+//       AddFlame(pos.x, pos.y+i);
+//       AddFlame(pos.x, pos.y+i+.5);
+//     }
+//   }
 
-  for (size_t i=0; i<m_range; ++i) {
-    if (map->IsFieldStandable(pos.x, pos.y-i)) {
-      ++down;
-      AddFlame(pos.x, pos.y-i);
-      AddFlame(pos.x, pos.y-i-.5);
-    }
-  }
+//   for (size_t i=0; i<m_range; ++i) {
+//     if (map->IsFieldStandable(pos.x, pos.y-i)) {
+//       ++down;
+//       AddFlame(pos.x, pos.y-i);
+//       AddFlame(pos.x, pos.y-i-.5);
+//     }
+//   }
 
-  for (size_t i=0; i<m_range; ++i) {
-    if (map->IsFieldStandable(pos.x+i, pos.y)) {
-      ++right;
-      AddFlame(pos.x+i, pos.y);
-      AddFlame(pos.x+i+.5, pos.y);
-    }
-  }
+//   for (size_t i=0; i<m_range; ++i) {
+//     if (map->IsFieldStandable(pos.x+i, pos.y)) {
+//       ++right;
+//       AddFlame(pos.x+i, pos.y);
+//       AddFlame(pos.x+i+.5, pos.y);
+//     }
+//   }
 
-  for (size_t i=0; i<m_range; ++i) {
-    if (map->IsFieldStandable(pos.x-i, pos.y)) {
-      ++left;
-      AddFlame(pos.x-i, pos.y);
-      AddFlame(pos.x-i-.5, pos.y);
-    }
-  }
+//   for (size_t i=0; i<m_range; ++i) {
+//     if (map->IsFieldStandable(pos.x-i, pos.y)) {
+//       ++left;
+//       AddFlame(pos.x-i, pos.y);
+//       AddFlame(pos.x-i-.5, pos.y);
+//     }
+//   }
 
 #warning implement creating FireRepresentation
 //   game.AddObject(ObjectPtr(new FireRepresentation(up, left, down, right)));
