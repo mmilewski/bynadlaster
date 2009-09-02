@@ -8,6 +8,7 @@
 #include "FireRangePowerup.h"
 
 #include "PlayerControllers.h"
+#include "Text.h"
 
 
 Game::Game() 
@@ -124,6 +125,15 @@ void Game::Draw() {
   std::for_each(m_objects.begin(), m_objects.end(), boost::bind(&Object::Draw, _1));
   std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Draw, _1));
   m_hud->Draw();
+
+  Text text;
+  text.PrintString(Position(5,8), "abcdefghijklmn");
+  text.PrintString(Position(5,9), "opqrstuvwxyz");
+  text.PrintString(Position(5,10), "<!>.");
+  text.PrintString(Position(5,11), "0123456789");
+
+  text.PrintString(Position(4,15), "Podstawowy font");
+  text.PrintString(Position(8,14), "v. 01");
 
   SDL_GL_SwapBuffers();
 }

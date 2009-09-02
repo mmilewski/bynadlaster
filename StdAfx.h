@@ -10,6 +10,7 @@
 #include <map>
 
 #include <cmath>
+#include <cctype>
 #include <algorithm>
 
 #include <boost/shared_ptr.hpp>
