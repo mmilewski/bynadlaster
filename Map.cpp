@@ -35,9 +35,15 @@ void Map::Load() {
 
 }
 
+
 Position Map::PositionToPositionOnMap(const Position& position) const {
   return Position(floor(position.x-3), floor(position.y-1));
 }
+
+
+// Position Map::PositionOnMapToPosition(const Position& position_on_map) const {
+//   return position_on_map + Position(.5, .5);
+// }
 
 
 bool Map::IsFieldStandable(const Position& field_position) const {
@@ -57,7 +63,7 @@ bool Map::IsFieldStandable(double posx, double posy) const {
 
 
 void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
-  const Position tile_position = Position(x+3, y+1);
+  const Position tile_position = Position(x+3, y+1) + Position(.5,.5);
 
   switch(type) {
   case FT::Floor:
@@ -79,35 +85,36 @@ void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
 
 
 void Map::DrawBorder() {
+  const Position offset = Position(.5, .5);
+
   // right border
   for (int i = GetHeight()+1; i > 0; --i) {
-    Renderer::Get().DrawSprite(Position(2 + GetWidth()+1, i), TexCoords(495.0, 126.0, 16.0, 16.0));
-    Renderer::Get().DrawSprite(Position(2 + GetWidth()+1 + 1, i), TexCoords(671.0, 126.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + GetWidth()+1, i), TexCoords(495.0, 126.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + GetWidth()+1 + 1, i), TexCoords(671.0, 126.0, 16.0, 16.0));
   }
-  Renderer::Get().DrawSprite(Position(2 + GetWidth()+1 + 1, 0), TexCoords(367.0, 142.0, 16.0, 16.0));
+  Renderer::Get().DrawSprite(offset+Position(2 + GetWidth()+1 + 1, 0), TexCoords(367.0, 142.0, 16.0, 16.0));
 
   // left border
   for (size_t i = GetHeight()+1; i > 0; --i) {
-    Renderer::Get().DrawSprite(Position(2 + 0, i), TexCoords(623.0, 126.0, 16.0, 16.0));
-    Renderer::Get().DrawSprite(Position(2 + 0 - 1, i), TexCoords(455.0, 142.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + 0, i), TexCoords(623.0, 126.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + 0 - 1, i), TexCoords(455.0, 142.0, 16.0, 16.0));
   }
-  Renderer::Get().DrawSprite(Position(2 + 0 - 1, 0), TexCoords(471.0, 142.0, 16.0, 16.0));
+  Renderer::Get().DrawSprite(offset+Position(2 + 0 - 1, 0), TexCoords(471.0, 142.0, 16.0, 16.0));
 
   // top corners
-  Renderer::Get().DrawSprite(Position(2, GetHeight()+1), TexCoords(431.0, 126.0, 16.0, 16.0)); // top left
-  Renderer::Get().DrawSprite(Position(2 + GetWidth()+1, GetHeight()+1), TexCoords(479.0, 126.0, 16.0, 16.0)); // top right
+  Renderer::Get().DrawSprite(offset+Position(2, GetHeight()+1), TexCoords(431.0, 126.0, 16.0, 16.0)); // top left
+  Renderer::Get().DrawSprite(offset+Position(2 + GetWidth()+1, GetHeight()+1), TexCoords(479.0, 126.0, 16.0, 16.0)); // top right
   
   // top border
   for (size_t i = 0; i < GetWidth(); i += 2) {
-    Renderer::Get().DrawSprite(Position(2 + 1 + i, GetHeight()+1), TexCoords(448.0, 126.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + 1 + i, GetHeight()+1), TexCoords(448.0, 126.0, 16.0, 16.0));
   }
   for (size_t i = 1; i < GetWidth(); i += 2) {
-    Renderer::Get().DrawSprite(Position(2 + 1 + i, GetHeight()+1), TexCoords(463.0, 126.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + 1 + i, GetHeight()+1), TexCoords(463.0, 126.0, 16.0, 16.0));
   }
 
   // bottom border
   for (size_t i = 0; i < GetWidth()+2; ++i) {
-    Renderer::Get().DrawSprite(Position(2 + i, 0), TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0));
+    Renderer::Get().DrawSprite(offset+Position(2 + i, 0), TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0));
   }
-  
 }

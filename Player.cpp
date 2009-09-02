@@ -49,7 +49,7 @@ void Player::GivePowerup(PowerupPtr powerup) {
 
 
 Position Player::GetNextPosition(double dt) const {
-  double speed = 5;
+  const double speed = 7;
   const Position pos = GetPosition();
   const Direction dir = GetDirection();
   return Position(pos.x + dir.x() * dt * speed,

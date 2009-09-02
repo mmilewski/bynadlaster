@@ -30,13 +30,14 @@ Game::Game()
 
   const size_t pid = m_players.at(0)->GetId();
   const size_t range = m_players.at(0)->GetFireRange();
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(3,1),range)));
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(4,3),range)));
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(5,6),range)));
-  m_objects.push_back(ObjectPtr(new BombPowerup(Position(4,6))));
-  m_objects.push_back(ObjectPtr(new BombPowerup(Position(3,8))));
-  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5,3))));
-  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(3,5))));
+
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(3.5,1.5),range)));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(4.5,3.5),range)));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(19.5,6.5),range)));
+  m_objects.push_back(ObjectPtr(new BombPowerup(Position(4.5,6.5))));
+  m_objects.push_back(ObjectPtr(new BombPowerup(Position(3.5,8.5))));
+  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5.5,3.5))));
+  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(3.5,5.5))));
 }
 
 
@@ -106,6 +107,7 @@ void Game::Update(double dt) {
 void Game::CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt) {
   // check collisions with four corners of player sprite
   AABB aabb = player->GetNextAABB(dt);
+  Position ppos = player->GetNextPosition(dt);
   Position max = aabb.GetMax();
   Position min = aabb.GetMin();
 
@@ -113,6 +115,11 @@ void Game::CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, do
       || !map->IsFieldStandable(max)
       || !map->IsFieldStandable(Position(max.x, min.y))
       || !map->IsFieldStandable(Position(min.x, max.y)))
+//   if (!map->IsFieldStandable(ppos + Position(-1, 0))
+//       || !map->IsFieldStandable(ppos + Position( 1,  0))
+//       || !map->IsFieldStandable(ppos + Position( 0, -1))
+//       || !map->IsFieldStandable(ppos + Position( 0,  1))
+//       )
     player->PerformAction(PA::GoNowhere);
 }
 
