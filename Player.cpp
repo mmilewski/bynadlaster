@@ -39,7 +39,7 @@ void Player::Update(const DataForController& data, double dt) {
   GetController()->ResetNextAction();
 
   // (1) & (2) must be in that order. Otherwise it is possible to walk
-  // through the walls by pressing arrows quickly
+  // through the walls by pressing keys quickly
 }
 
 

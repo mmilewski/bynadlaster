@@ -13,7 +13,7 @@ public:
   void Affect(Player& player) { player.IncreaseBombCount(); }
 
 protected:
-  void DoDraw();
+  void DoDraw() const;
   void DoUpdate(double dt);
 };
 

@@ -14,6 +14,7 @@ void BombCreator::Create(Game& game) {
 
 #warning check whether it is possible to place a bomb - if there is no other bomb already placed nearby
 
-  if(map->IsFieldStandable(dst_pos))
+  if(map->IsFieldStandable(dst_pos)) {
     game.AddObject(BombPtr(new Bomb(m_owner_id, dst_pos, m_range)));
+  }
 }

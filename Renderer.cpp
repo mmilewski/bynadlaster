@@ -250,3 +250,36 @@ SDL_Surface* Renderer::flip( SDL_Surface *in, bool x, bool y, bool rgba )
     }
     return out;
 }
+
+
+void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size) {
+  const double tex_width = 1024;
+  const double tex_height = 1024;
+
+  const double tc_top = (tex_height - tc.bottom + tc.height)/tex_height;
+  const double tc_right = (tc.left + tc.width)/tex_width;
+  const double tc_left = tc.left/tex_width;
+  const double tc_bottom = 1-tc.bottom/tex_height;
+
+  glBegin(GL_QUADS);
+  glTexCoord2f(tc_left,  tc_bottom);   glVertex2f(pos.x,                pos.y);
+  glTexCoord2f(tc_right, tc_bottom);   glVertex2f(pos.x + size.width,   pos.y);
+  glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x + size.width,   pos.y + size.height);
+  glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x,                pos.y + size.height);
+  glEnd();
+}
+
+
+// DrawSprite methods draw it relative to the map. This method
+// takes position in the eye space
+void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size, Color color) {
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glColor4f(color.r, color.g, color.b, color.a);
+  DrawSpriteAbsolute(pos, tc, size);
+  glColor4f(1,1,1,1);
+
+  glDisable(GL_BLEND);
+}
+

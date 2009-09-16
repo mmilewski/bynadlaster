@@ -1,8 +1,9 @@
 #include "Text.h"
 #include "Renderer.h"
+#include <boost/lexical_cast.hpp>
 
 
-void Text::PrintString(Position position, std::string text) {
+void Text::PrintString(Position position, std::string text, Size size) {
   std::transform(text.begin(), text.end(), text.begin(), tolower);
 
   for (size_t i = 0; i < text.length(); ++i) {
@@ -37,8 +38,72 @@ void Text::PrintString(Position position, std::string text) {
     }
 
     if (ch != ' ') { // for 'space' we don't have to draw anything
-      Renderer::Get().DrawSprite(Position(position.x + i, position.y),
-				 tc, Size(0.025, 0.025));
+      Renderer::Get().DrawSpriteAbsolute(Position(position.x + i * size.width, position.y), tc, size);
     }
   }
+}
+
+
+void Text::PrintString(Position position, std::string text) {
+  PrintString(position, text, Size(0.02, 0.03));
+}
+
+
+void Text::PrintNumber(Position position, int number) {
+  PrintNumber(position, number, Size(0.02, 0.03));
+}
+
+
+void Text::PrintNumber(Position position, int number, Size size) {
+  std::string text = boost::lexical_cast<std::string>(number);
+  PrintString(position, text, size);
+}
+
+
+void Text::PrintStage(Position position, size_t level, size_t stage, Size size) {
+  Renderer::Get().DrawSpriteAbsolute(position, TexCoords(224, 77, 100, 13), size);
+
+  PrintStageDigit(Position(position.x + 6 * size.width / 10.0, position.y), 
+		  level,
+		  Size(size.width/10, size.height));
+
+  PrintStageDigit(Position(position.x + 8.5 * size.width / 10.0, position.y), 
+		  stage,
+		  Size(size.width/10, size.height));
+}
+
+
+void Text::PrintStageCenter(size_t level, size_t stage) {
+  PrintStage(Position(0.5 - 0.25/2.0, 0.5 - 0.1/2.0), level, stage, Size(0.25, 0.1));
+}
+
+
+void Text::PrintStageDigit(Position position, size_t digit, Size size) {
+  TexCoords tc(201 + digit * 8, 108, 8, 13);
+  Renderer::Get().DrawSpriteAbsolute(position, tc, size);
+}
+
+
+void Text::PrintRound(Position position, int round_num, Size size) {
+  TexCoords tc(76, 943, 49, 14);
+  Renderer::Get().DrawSpriteAbsolute(position, tc, size);
+  PrintRoundDigit(Position(position.x + size.width * 5.5 / 5.0, position.y), 
+		  round_num, 
+		  Size(size.width / 5, size.height));
+}
+
+
+void Text::PrintRound(Position position, int round_num) {
+  PrintRound(position, round_num, Size(0.2, 0.06));
+}
+
+
+void Text::PrintRoundCenter(int round_num) {
+  PrintRound(Position(0.5 - 0.2/2.0, 0.5 - 0.06/2.0), round_num, Size(0.2, 0.06));
+}
+
+
+void Text::PrintRoundDigit(Position position, int digit, Size size) {
+  TexCoords tc(137, 942, 91 / 9 + digit * size.width, 14);
+  Renderer::Get().DrawSpriteAbsolute(position, tc, size);
 }

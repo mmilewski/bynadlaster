@@ -9,9 +9,10 @@
 
 class Object {
 public:
+  explicit Object() : m_is_alive(true) { }
   virtual ~Object() {}
   
-  void Draw()  { DoDraw(); }
+  void Draw() const  { DoDraw(); }
   void Update(double dt)  { DoUpdate(dt); }
   OT::ObjectType GetType() const  { return DoGetType(); }
   Position GetPosition() const  { return DoGetPosition(); }
@@ -22,7 +23,7 @@ public:
 
 protected:
   void AddCreator(CreatorPtr creator)  { m_creators.insert(m_creators.end(), creator); }
-  virtual void DoDraw() = 0;
+  virtual void DoDraw() const = 0;
   virtual void DoUpdate(double dt) = 0;
   virtual OT::ObjectType DoGetType() const = 0;
   virtual Position DoGetPosition() const = 0;

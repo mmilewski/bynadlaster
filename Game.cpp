@@ -8,7 +8,9 @@
 #include "FireRangePowerup.h"
 
 #include "PlayerControllers.h"
+
 #include "Text.h"
+#include "AfterKillPoints.h"
 
 
 Game::Game() 
@@ -81,12 +83,17 @@ void Game::Update(double dt) {
 
   DataForController data_for_controller;
   std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Update, _1, data_for_controller, dt));
+  std::for_each(m_non_entities.begin(), m_non_entities.end(), boost::bind(&NonEntity::Update, _1, dt));
 
 //   std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
 //             << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
 
   m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), !boost::bind(&Object::IsAlive,_1)),
                   m_objects.end());
+
+  m_non_entities.erase(std::remove_if(m_non_entities.begin(), m_non_entities.end(), 
+				      !boost::bind(&NonEntity::IsAlive,_1)),
+		       m_non_entities.end());
 
   // collect creators from objects && players together and run them all
   std::list<CreatorPtr> all_creators;
@@ -131,16 +138,14 @@ void Game::Draw() {
   m_map->Draw();
   std::for_each(m_objects.begin(), m_objects.end(), boost::bind(&Object::Draw, _1));
   std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Draw, _1));
+  std::for_each(m_non_entities.begin(), m_non_entities.end(), boost::bind(&NonEntity::Draw, _1));
   m_hud->Draw();
 
   Text text;
-  text.PrintString(Position(5,8), "abcdefghijklmn");
-  text.PrintString(Position(5,9), "opqrstuvwxyz");
-  text.PrintString(Position(5,10), "<!>.");
-  text.PrintString(Position(5,11), "0123456789");
-
-  text.PrintString(Position(4,15), "Podstawowy font");
-  text.PrintString(Position(8,14), "v. 01");
+//   text.PrintString(Position(0.4, 0.5), "Podstawowy font");
+//   text.PrintNumber(Position(0.6, 0.3), 1410);
+//   text.PrintStageCenter(4,5);
+  text.PrintRoundCenter(3);
 
   SDL_GL_SwapBuffers();
 }
@@ -175,6 +180,10 @@ bool Game::HandleInputGame(const SDL_Event& event) {
       m_players.at(0)->SetDie(!m_players.at(0)->IsDying());
       return true;
     }
+    else if (event.key.keysym.sym == SDLK_RCTRL) {
+      m_non_entities.push_back(NonEntityPtr(new AfterKillPoints(Position(0.5, 0.8), AfterKillPoints::Amount(rand()%8))));
+    }
+
   }
   return false;
 }

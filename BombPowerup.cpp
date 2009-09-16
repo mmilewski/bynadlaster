@@ -3,9 +3,10 @@
 #include "BombPowerup.h"
 
 
-void BombPowerup::DoDraw() {
-  if(!IsAlive())
+void BombPowerup::DoDraw() const {
+  if(!IsAlive()) {
     return;
+  }
 
   const double tile_width_in_px = 16.0;
   const double tile_height_in_px = 16.0;

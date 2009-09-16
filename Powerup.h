@@ -12,8 +12,8 @@ public :
   virtual void Affect(Player& player) = 0;
 
 protected:
-  virtual void DoDraw() = 0;
-  virtual void DoUpdate(double dt) = 0;
+//   virtual void DoDraw() const = 0;			// is that useless?
+//   virtual void DoUpdate(double dt) = 0;
   OT::ObjectType DoGetType() const { return OT::Powerup; }
   virtual Position DoGetPosition() const { return m_position; }
   virtual AABB DoGetAABB() const { return m_aabb; }

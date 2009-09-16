@@ -3,9 +3,10 @@
 #include "FireRangePowerup.h"
 
 
-void FireRangePowerup::DoDraw() {
-  if(!IsAlive())
+void FireRangePowerup::DoDraw() const {
+  if(!IsAlive()) {
     return;
+  }
 
   const double tile_width_in_px = 16.0;
   const double tile_height_in_px = 16.0;

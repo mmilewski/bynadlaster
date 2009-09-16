@@ -78,7 +78,7 @@ void App::InitGl() {
   glEnable(GL_TEXTURE_2D);
 
   glEnable(GL_ALPHA_TEST);
-  glAlphaFunc(GL_GREATER, 0.5);
+  glAlphaFunc(GL_GREATER, 0.01); // 0.01 (not 0.5) because we need fade outs
   Resize(m_window_width, m_window_height);
 }
 

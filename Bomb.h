@@ -10,7 +10,7 @@ public :
   void Detonate();
     
 protected:
-  void DoDraw();
+  void DoDraw() const;
   void DoUpdate(double dt);
   OT::ObjectType DoGetType() const { return OT::Bomb; }
   Position DoGetPosition() const { return m_position; }

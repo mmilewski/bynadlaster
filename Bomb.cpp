@@ -12,7 +12,7 @@ Bomb::Bomb(size_t owner_id, Position position, int explosion_range)
 }
 
 
-void Bomb::DoDraw() {
+void Bomb::DoDraw() const {
   if(!IsAlive())
     return;
 

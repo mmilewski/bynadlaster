@@ -4,6 +4,7 @@
 #include "StdAfx.h"
 #include "Map.h"
 #include "Object.h"
+#include "NonEntity.h"
 #include "Player.h"
 #include "Hud.h"
 
@@ -33,6 +34,7 @@ private:
   MapPtr m_map;
   std::vector<ObjectPtr> m_objects;   // enemies, fire, bomb, ups
   std::vector<PlayerPtr> m_players;
+  std::vector<NonEntityPtr> m_non_entities; // objects that do not affect the player
   HudPtr m_hud;
 };
 
