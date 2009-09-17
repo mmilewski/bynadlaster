@@ -7,19 +7,11 @@
 #include "NonEntity.h"
 #include "Player.h"
 #include "Hud.h"
+#include "GameState.h"
 
-
-class Game {
+class Game : public GameState {
 public:
   explicit Game();
-
-  void Update(double dt);
-  void Draw();
-  
-  bool IsDone() const { return m_is_done; }
-  void Finish() { m_is_done = true; } 
-
-  bool HandleInput(const SDL_Event& event);
 
   MapPtr GetMap() { return m_map; }
   void AddObject(ObjectPtr object) { m_objects.push_back(object); }
@@ -29,8 +21,12 @@ protected:
   bool HandleInputGame(const SDL_Event& event);
   bool HandleInputPlayers(const SDL_Event& event);
 
+protected:
+  void DoDraw() const;
+  void DoUpdate(double dt);
+  bool DoHandleInput(const SDL_Event& event);
+
 private:
-  bool m_is_done;
   MapPtr m_map;
   std::vector<ObjectPtr> m_objects;   // enemies, fire, bomb, ups
   std::vector<PlayerPtr> m_players;

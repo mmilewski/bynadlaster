@@ -272,7 +272,7 @@ void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size) {
 
 // DrawSprite methods draw it relative to the map. This method
 // takes position in the eye space
-void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size, Color color) {
+void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Color color, Size size) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -283,3 +283,22 @@ void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size, Color c
   glDisable(GL_BLEND);
 }
 
+
+
+void Renderer::DrawQuad(Position pos, Color color, Size size) {
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glColor4f(color.r, color.g, color.b, color.a);
+
+  glBegin(GL_QUADS);
+  glVertex2f(pos.x,            pos.y);
+  glVertex2f(pos.x+size.width, pos.y);
+  glVertex2f(pos.x+size.width, pos.y+size.height);
+  glVertex2f(pos.x,            pos.y+size.height);
+  glEnd();
+
+  glColor4f(1,1,1,1);
+
+  glDisable(GL_BLEND);
+}

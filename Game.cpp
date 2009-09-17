@@ -13,8 +13,7 @@
 #include "AfterKillPoints.h"
 
 
-Game::Game() 
-  : m_is_done(false) {
+Game::Game() {
   m_map.reset(new Map(g_max_map_width, g_max_map_height));
   m_hud.reset(new Hud());
 
@@ -22,13 +21,6 @@ Game::Game()
 					   Position(8,7), 
 					   PT::White, 
 					   PlayerControllerPtr(new PlayerControllerKb()))));
-
-  Renderer::Get().LoadTexture("big_byna.png");
-
-  // UWAGA. rozmiary kafla na ekranie. Jeżeli ekran nie będzie kwadratowy, to kafle również
-  // nie będą kwadratowe. Najlepiej byłoby mieć dostęp do parametru ratio (width/height)
-  // okna - wtedy wystarczy ustawić np. tile_width=window_ratio/GetWidth()
-  Renderer::Get().SetTileSize(Size(1.0/g_tiles_on_screen_in_x, 1.0/g_tiles_on_screen_in_y));
 
   const size_t pid = m_players.at(0)->GetId();
   const size_t range = m_players.at(0)->GetFireRange();
@@ -43,7 +35,7 @@ Game::Game()
 }
 
 
-void Game::Update(double dt) {
+void Game::DoUpdate(double dt) {
   m_hud->Update(dt);
   m_map->Update(dt);
 
@@ -131,7 +123,7 @@ void Game::CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, do
 }
 
 
-void Game::Draw() {
+void Game::DoDraw() const {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
 
@@ -141,17 +133,11 @@ void Game::Draw() {
   std::for_each(m_non_entities.begin(), m_non_entities.end(), boost::bind(&NonEntity::Draw, _1));
   m_hud->Draw();
 
-  Text text;
-//   text.PrintString(Position(0.4, 0.5), "Podstawowy font");
-//   text.PrintNumber(Position(0.6, 0.3), 1410);
-//   text.PrintStageCenter(4,5);
-  text.PrintRoundCenter(3);
-
   SDL_GL_SwapBuffers();
 }
 
 
-bool Game::HandleInput(const SDL_Event& event) {
+bool Game::DoHandleInput(const SDL_Event& event) {
   if (HandleInputGame(event)) return true;
   if (HandleInputPlayers(event)) return true;
   return false;
@@ -160,6 +146,10 @@ bool Game::HandleInput(const SDL_Event& event) {
 
 bool Game::HandleInputGame(const SDL_Event& event) {
   if (event.type == SDL_KEYDOWN) {
+    if (event.key.keysym.sym == SDLK_q) {
+      Finish();
+      return true;
+    }
     if (event.key.keysym.sym == SDLK_1) {
       m_players.at(0)->SetType(PT::White);
       return true;

@@ -5,9 +5,12 @@
 
 class Text {
 public:
-  void PrintString(Position position, std::string text, Size size);
+  void PrintString(Position position, std::string text, Color color, Size size);
+  void PrintString(Position position, std::string text, Color color);
   void PrintString(Position position, std::string text);
-  void PrintNumber(Position position, int number, Size size);
+
+  void PrintNumber(Position position, int number, Color color, Size size);
+  void PrintNumber(Position position, int number, Color color);
   void PrintNumber(Position position, int number);
   
   void PrintStage(Position position, size_t level, size_t stage, Size size);

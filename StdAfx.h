@@ -31,6 +31,7 @@
 #include "Direction.h"
 #include "TexCoords.h"
 #include "Size.h"
+#include "Color.h"
 #include "Lua.h"
 
 #endif

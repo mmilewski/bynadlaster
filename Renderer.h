@@ -15,7 +15,9 @@ public:
   void DrawSprite(Position pos, TexCoords tc);
 
   void DrawSpriteAbsolute(Position pos, TexCoords tc, Size ts);
-  void DrawSpriteAbsolute(Position pos, TexCoords tc, Size size, Color color);
+  void DrawSpriteAbsolute(Position pos, TexCoords tc, Color color, Size size);
+
+  void DrawQuad(Position pos, Color color, Size size);
 
   void SetTileSize(Size size)  { m_tile_width = size.width; m_tile_height = size.height; }
   

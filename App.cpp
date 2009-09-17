@@ -1,4 +1,7 @@
+#include "Game.h"
+#include "Menu.h"
 #include "App.h"
+#include "Renderer.h"
 
 
 void App::CreateWindow(int width, int height, int depth, bool fullscreen) {
@@ -42,7 +45,7 @@ void App::Resize(int width, int height) {
 
 
 void App::ProcessEvents() {
-  if (!m_game) {
+  if (!m_game_state) {
     return;
   }
 
@@ -52,11 +55,11 @@ void App::ProcessEvents() {
       Resize(event.resize.w, event.resize.h);
     }
     else if (event.type == SDL_QUIT) {
-      m_game->Finish();
+      m_game_state->Finish();
     }
     else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
       if (!HandleInput(event)) {
-	m_game->HandleInput(event);
+	m_game_state->HandleInput(event);
       }
     }
     else if (event.type == SDL_MOUSEMOTION) {
@@ -87,11 +90,32 @@ void App::Run() {
   CreateWindow(800, 600, 32, false);
   InitGl();
     
-  m_game.reset(new Game());
-  while (!m_game->IsDone()) {
+  Renderer::Get().LoadTexture("big_byna.png");
+  // UWAGA. rozmiary kafla na ekranie. Jeżeli ekran nie będzie kwadratowy, to kafle również
+  // nie będą kwadratowe. Najlepiej byłoby mieć dostęp do parametru ratio (width/height)
+  // okna - wtedy wystarczy ustawić np. tile_width=window_ratio/GetWidth()
+  Renderer::Get().SetTileSize(Size(1.0/g_tiles_on_screen_in_x, 1.0/g_tiles_on_screen_in_y));
+
+  m_game_state = GameStatePtr(new Menu());
+  while (true) {
+
+    if (m_game_state->IsDone()) {
+      MenuPtr menu = boost::dynamic_pointer_cast<Menu>(m_game_state);
+      if (menu) {
+	if (menu->GetCurrentOption() == Menu::QUIT_GAME) { break; }
+	else if (menu->GetCurrentOption() == Menu::START_GAME) {
+	  m_game_state = GameStatePtr(new Game());
+	}
+      }
+      else {
+	GamePtr game = boost::dynamic_pointer_cast<Game>(m_game_state);
+	if (game) { break; }
+      }
+    }
+
     ProcessEvents();
-    m_game->Update( GetDeltaTime() );
-    m_game->Draw();
+    m_game_state->Update( GetDeltaTime() );
+    m_game_state->Draw();
   }
 }
 

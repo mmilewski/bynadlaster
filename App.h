@@ -1,9 +1,8 @@
 #ifndef __APP_H_INCLUDED__
 #define __APP_H_INCLUDED__
 
-
 #include "StdAfx.h"
-#include "Game.h"
+#include "GameState.h"
 
 class App {
 public:
@@ -29,7 +28,7 @@ protected:
   double GetDeltaTime();
 
 private:
-  GamePtr m_game;
+  GameStatePtr m_game_state;
   int m_window_width;
   int m_window_height;
 };

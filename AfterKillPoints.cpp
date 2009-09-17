@@ -20,7 +20,7 @@ void AfterKillPoints::DoDraw() const {
   TexCoords tc(442 + m_amount * 16, 389, 16, 5);
   double opacity = m_time_left / s_life_time * 2.0; // we want max opacity for some time
   if (opacity > 1.0) opacity = 1.0;
-  Renderer::Get().DrawSpriteAbsolute(m_position, tc, m_size, Color(1,1,0,opacity));
+  Renderer::Get().DrawSpriteAbsolute(m_position, tc, Color(1,1,0,opacity), m_size);
 }
 
 

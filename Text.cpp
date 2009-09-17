@@ -3,7 +3,8 @@
 #include <boost/lexical_cast.hpp>
 
 
-void Text::PrintString(Position position, std::string text, Size size) {
+
+void Text::PrintString(Position position, std::string text, Color color, Size size) {
   std::transform(text.begin(), text.end(), text.begin(), tolower);
 
   for (size_t i = 0; i < text.length(); ++i) {
@@ -38,25 +39,35 @@ void Text::PrintString(Position position, std::string text, Size size) {
     }
 
     if (ch != ' ') { // for 'space' we don't have to draw anything
-      Renderer::Get().DrawSpriteAbsolute(Position(position.x + i * size.width, position.y), tc, size);
+      Renderer::Get().DrawSpriteAbsolute(Position(position.x + i * size.width, position.y), tc, color, size);
     }
   }
 }
 
 
+void Text::PrintString(Position position, std::string text, Color color) {
+  PrintString(position, text, color, Size(0.02, 0.03));
+}
+
+
 void Text::PrintString(Position position, std::string text) {
-  PrintString(position, text, Size(0.02, 0.03));
+  PrintString(position, text, Color(1,1,1));
 }
 
 
 void Text::PrintNumber(Position position, int number) {
-  PrintNumber(position, number, Size(0.02, 0.03));
+  PrintNumber(position, number, Color(1,1,1));
 }
 
 
-void Text::PrintNumber(Position position, int number, Size size) {
+void Text::PrintNumber(Position position, int number, Color color) {
+  PrintNumber(position, number, color, Size(0.02, 0.03));
+}
+
+
+void Text::PrintNumber(Position position, int number, Color color, Size size) {
   std::string text = boost::lexical_cast<std::string>(number);
-  PrintString(position, text, size);
+  PrintString(position, text, color, size);
 }
 
 
