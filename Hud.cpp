@@ -5,8 +5,8 @@
 
 void Hud::Draw() {
   Position tile_position(1.5, g_tiles_on_screen_in_y-2);
-  Renderer::Get().DrawSprite(tile_position, 
-			     TexCoords(1, 172, 254.0, 23.0), 
+  Renderer::Get().DrawSprite(TexCoords(1, 172, 254.0, 23.0), 
+			     tile_position, 
 			     Size((g_tiles_on_screen_in_x - 3)/static_cast<double>(g_tiles_on_screen_in_x),
 				  2.0/g_tiles_on_screen_in_y));
 }

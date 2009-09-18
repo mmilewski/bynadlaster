@@ -16,14 +16,14 @@ void Menu::DoDraw() const {
   glTranslatef(0, -m_camera_y, 0);
 
   Renderer::Get().DrawQuad(Position(0,0.75), Color(0.325, 0.451, 0.827), Size(1,1)); // why does this colour looks as wrong one?
-  Renderer::Get().DrawSpriteAbsolute(Position(0,0), TexCoords(643,869,256,146), Size(1,0.75));
-  Renderer::Get().DrawSpriteAbsolute(Position(0.25,0.70), TexCoords(653,919,89,50), Size(0.349/2,0.255/2));
-  Renderer::Get().DrawSpriteAbsolute(Position(0.25+0.349/2,0.7+0.082/2), TexCoords(742,903,175,34), Size(0.686/2,0.173/2));
+  Renderer::Get().DrawSpriteAbsolute(TexCoords(643,869,256,146), Position(0,0), Size(1,0.75));
+  Renderer::Get().DrawSpriteAbsolute(TexCoords(653,919,89,50), Position(0.25,0.70), Size(0.349/2,0.255/2));
+  Renderer::Get().DrawSpriteAbsolute(TexCoords(742,903,175,34), Position(0.25+0.349/2,0.7+0.082/2), Size(0.686/2,0.173/2));
 
   Text text;
-  text.PrintString(Position(0.35, 0.43), "push fire button", Color(1,1,0));
-  text.PrintString(Position(0.4, 0.3), "game start");
-  text.PrintString(Position(0.4, 0.25), "quit");
+  text.PrintString("push fire button", Position(0.35, 0.43), Color(1,1,0));
+  text.PrintString( "game start", Position(0.4, 0.3));
+  text.PrintString( "quit", Position(0.4, 0.25));
 
   // show marker
   double x = 0.35;
@@ -40,7 +40,7 @@ void Menu::DoDraw() const {
   default:
     break;
   }
-  Renderer::Get().DrawSpriteAbsolute(Position(x,y), TexCoords(747,912,8,8), Size(0.031, 0.031));
+  Renderer::Get().DrawSpriteAbsolute(TexCoords(747,912,8,8), Position(x,y), Size(0.031, 0.031));
   
   SDL_GL_SwapBuffers();
 }

@@ -28,7 +28,7 @@ void Player::Draw() {
 // 	    << ", is dying = " << IsDying() << "dt = " << SDL_GetTicks() - m_current_action_start_time << "\n";
 //   std::cerr << "tc = " << tc.left << ", " << tc.bottom << ", " << tc.width << ", " << tc.height << "\n";
 
-  Renderer::Get().DrawSprite(GetPosition(), tc);
+  Renderer::Get().DrawSprite(tc, GetPosition());
 }
 
 

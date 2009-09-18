@@ -5,31 +5,26 @@
 
 class Text {
 public:
-  void PrintString(Position position, std::string text, Color color, Size size);
-  void PrintString(Position position, std::string text, Color color);
-  void PrintString(Position position, std::string text);
+  void PrintString(std::string text, Position position, Color color, Size size);
+  void PrintString(std::string text, Position position, Color color);
+  void PrintString(std::string text, Position position);
+  void DrawGlyph(char glyph, Position position, Color color, Size size);
 
-  void PrintNumber(Position position, int number, Color color, Size size);
-  void PrintNumber(Position position, int number, Color color);
-  void PrintNumber(Position position, int number);
+  void PrintNumber(int number, Position position, Color color, Size size);
+  void PrintNumber(int number, Position position, Color color);
+  void PrintNumber(int number, Position position);
   
-  void PrintStage(Position position, size_t level, size_t stage, Size size);
+  void PrintStage(size_t level, size_t stage, Position position, Size size);
   void PrintStageCenter(size_t level, size_t stage);
 
-  void PrintRound(Position position, int round_num, Size size);
-  void PrintRound(Position position, int round_num);
+  void PrintRound(int round_num, Position position, Size size);
+  void PrintRound(int round_num, Position position);
   void PrintRoundCenter(int round_num);
-//   void PrintAfterKillPoints(Position position, AKP::AfterKillPoints points);
-//   void PrintBynaDlaster(Position position);
-
-//   void SetFontSizeInPx(Size size);
 
 protected:
-  void PrintStageDigit(Position position, size_t digit, Size size);
-  void PrintRoundDigit(Position position, int digit, Size size);
+  void PrintStageDigit(size_t digit, Position position, Size size);
+  void PrintRoundDigit(int digit, Position position, Size size);
 
-private:
-//   Size m_font_size;
 };
 
 

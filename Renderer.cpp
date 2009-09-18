@@ -36,7 +36,7 @@ void Renderer::LoadTexture(std::string filename) {
 /// @param pos Pozycja kafla na ekranie (lewy dolny róg)
 /// @param tc Gdzie jest sprite na teksturze (w pikselach)
 /// @param ts Jakiej wielkości tile wyświetlić na ekranie (rozmiar quada)
-void Renderer::DrawSprite(Position pos, TexCoords tc, Size size) {
+void Renderer::DrawSprite(TexCoords tc, Position pos, Size size) {
   const double tex_width = 1024;
   const double tex_height = 1024;
 
@@ -57,15 +57,15 @@ void Renderer::DrawSprite(Position pos, TexCoords tc, Size size) {
 }
 
 
-void Renderer::DrawSprite(Position pos, TexCoords tc) {
-  DrawSprite(pos, tc, Size(m_tile_width, m_tile_height));
+void Renderer::DrawSprite(TexCoords tc, Position pos) {
+  DrawSprite(tc, pos, Size(m_tile_width, m_tile_height));
 }
 
 
 /* kod poniższej funkcji został ściągnięty z:
    http://michalis.ii.uni.wroc.pl/~michalis/teaching/pgk/c/sdl_utils.c
 */
-SDL_Surface* Renderer::flip( SDL_Surface *in, bool x, bool y, bool rgba )
+SDL_Surface* Renderer::flip(SDL_Surface *in, bool x, bool y, bool rgba)
 {
     /* masks for various endianesses added by Michalis.
        SDL_CreateRGBSurface docs example
@@ -252,7 +252,7 @@ SDL_Surface* Renderer::flip( SDL_Surface *in, bool x, bool y, bool rgba )
 }
 
 
-void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size) {
+void Renderer::DrawSpriteAbsolute(TexCoords tc, Position pos, Size size) {
   const double tex_width = 1024;
   const double tex_height = 1024;
 
@@ -272,12 +272,12 @@ void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Size size) {
 
 // DrawSprite methods draw it relative to the map. This method
 // takes position in the eye space
-void Renderer::DrawSpriteAbsolute(Position pos, TexCoords tc, Color color, Size size) {
+void Renderer::DrawSpriteAbsolute(TexCoords tc, Position pos, Color color, Size size) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glColor4f(color.r, color.g, color.b, color.a);
-  DrawSpriteAbsolute(pos, tc, size);
+  DrawSpriteAbsolute(tc, pos, size);
   glColor4f(1,1,1,1);
 
   glDisable(GL_BLEND);

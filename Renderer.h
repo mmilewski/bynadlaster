@@ -11,11 +11,11 @@ class Renderer : boost::noncopyable {
 public:
   void LoadTexture(std::string filename);
 
-  void DrawSprite(Position pos, TexCoords tc, Size ts);
-  void DrawSprite(Position pos, TexCoords tc);
+  void DrawSprite(TexCoords tc, Position pos, Size ts);
+  void DrawSprite(TexCoords tc, Position pos);
 
-  void DrawSpriteAbsolute(Position pos, TexCoords tc, Size ts);
-  void DrawSpriteAbsolute(Position pos, TexCoords tc, Color color, Size size);
+  void DrawSpriteAbsolute(TexCoords tc, Position pos, Size ts);
+  void DrawSpriteAbsolute(TexCoords tc, Position pos, Color color, Size size);
 
   void DrawQuad(Position pos, Color color, Size size);
 
