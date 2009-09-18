@@ -21,6 +21,8 @@ public:
 
   void SetTileSize(Size size)  { m_tile_width = size.width; m_tile_height = size.height; }
   
+  void SwapBuffers();
+
   static Renderer& Get() {
     static Renderer s_instance;
     return s_instance;

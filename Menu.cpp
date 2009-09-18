@@ -42,7 +42,7 @@ void Menu::DoDraw() const {
   }
   Renderer::Get().DrawSpriteAbsolute(TexCoords(747,912,8,8), Position(x,y), Size(0.031, 0.031));
   
-  SDL_GL_SwapBuffers();
+  Renderer::Get().SwapBuffers();
 }
 
 

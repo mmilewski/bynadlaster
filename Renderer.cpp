@@ -302,3 +302,8 @@ void Renderer::DrawQuad(Position pos, Color color, Size size) {
 
   glDisable(GL_BLEND);
 }
+
+
+void Renderer::SwapBuffers() {
+  SDL_GL_SwapBuffers();
+}

@@ -133,7 +133,7 @@ void Game::DoDraw() const {
   std::for_each(m_non_entities.begin(), m_non_entities.end(), boost::bind(&NonEntity::Draw, _1));
   m_hud->Draw();
 
-  SDL_GL_SwapBuffers();
+  Renderer::Get().SwapBuffers();
 }
 
 
