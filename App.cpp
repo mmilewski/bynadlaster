@@ -1,7 +1,9 @@
+#include "StdAfx.h"
+#include "Engine.h"
+
 #include "Game.h"
 #include "Menu.h"
 #include "App.h"
-#include "Renderer.h"
 
 
 void App::CreateWindow(int width, int height, int depth, bool fullscreen) {
@@ -72,7 +74,7 @@ void App::ProcessEvents() {
 }
 
 void App::Init() {
-  Lua::Get(); // init the lua machine
+  Engine::Get();
 }
 
 void App::InitGl() {
@@ -90,11 +92,11 @@ void App::Run() {
   CreateWindow(800, 600, 32, false);
   InitGl();
     
-  Renderer::Get().LoadTexture("big_byna.png");
+  Engine::Get().Renderer()->LoadTexture("big_byna.png");
   // UWAGA. rozmiary kafla na ekranie. Jeżeli ekran nie będzie kwadratowy, to kafle również
   // nie będą kwadratowe. Najlepiej byłoby mieć dostęp do parametru ratio (width/height)
   // okna - wtedy wystarczy ustawić np. tile_width=window_ratio/GetWidth()
-  Renderer::Get().SetTileSize(Size(1.0/g_tiles_on_screen_in_x, 1.0/g_tiles_on_screen_in_y));
+  Engine::Get().Renderer()->SetTileSize(Size(1.0/g_tiles_on_screen_in_x, 1.0/g_tiles_on_screen_in_y));
 
   m_game_state = GameStatePtr(new Menu());
   while (true) {
@@ -146,7 +148,7 @@ double App::GetDeltaTime() {
 
 bool App::HandleInput(const SDL_Event& event) {
   if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE) {
-    Lua::Get().Reset();
+    Engine::Get().Scripts()->Reset();
     return true;
   }
   return false;

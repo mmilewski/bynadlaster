@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Engine.h"
 #include "StdAfx.h"
 #include "Bomb.h"
 #include "FlameCreator.h"
@@ -19,7 +19,7 @@ void Bomb::DoDraw() const {
   const double tile_width_in_px = 16.0;
   const double tile_height_in_px = 16.0;
   TexCoords tc((470.0+tile_width_in_px*m_anim_frame_num), 16.0, tile_width_in_px, tile_height_in_px);
-  Renderer::Get().DrawSprite(tc, GetPosition());
+  Engine::Get().Renderer()->DrawSprite(tc, GetPosition());
 }
 
 

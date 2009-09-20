@@ -32,6 +32,7 @@
 #include "TexCoords.h"
 #include "Size.h"
 #include "Color.h"
-#include "Lua.h"
+
+#include "ExceptionNotFound.h"
 
 #endif

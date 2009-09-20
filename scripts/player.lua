@@ -43,7 +43,7 @@ function InitSprites()
 	 if frame_idx < first_die_frame then -- does not die
 	    local animation = tbl_action_names[math.floor(frame_idx/3)+1];
 	    local frame = frame_idx % 3;
-	    print("Loading animation " .. animation .. ", frame " .. frame);
+-- 	    print("Loading animation " .. animation .. ", frame " .. frame);
 
 	    if frame_idx % 3 == 0 then tbl_players_sprites[player_idx][animation] = { }; end
 	    tbl_players_sprites[player_idx][animation][frame] = { };
@@ -59,7 +59,7 @@ function InitSprites()
 	    tbl_players_sprites[player_idx]["Die"][frame].x = x;
 	    tbl_players_sprites[player_idx]["Die"][frame].y = y;
 	    
-	    print("Loading animation " .. animation .. ", frame " .. frame);
+-- 	    print("Loading animation " .. animation .. ", frame " .. frame);
 	    sprite_count = sprite_count + 1;
 	 end
       end

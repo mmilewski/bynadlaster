@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Engine.h"
 #include "Bomb.h"
 #include "Game.h"
 #include "Map.h"
@@ -133,7 +133,7 @@ void Game::DoDraw() const {
   std::for_each(m_non_entities.begin(), m_non_entities.end(), boost::bind(&NonEntity::Draw, _1));
   m_hud->Draw();
 
-  Renderer::Get().SwapBuffers();
+  Engine::Get().Renderer()->SwapBuffers();
 }
 
 

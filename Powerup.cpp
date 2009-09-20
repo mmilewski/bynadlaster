@@ -1,4 +1,3 @@
-#include "Renderer.h"
 #include "StdAfx.h"
 #include "Powerup.h"
 

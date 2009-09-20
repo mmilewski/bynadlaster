@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Engine.h"
 #include "Player.h"
 #include "BombCreator.h"
 
@@ -19,20 +19,20 @@ Player::Player(size_t id, Position initial_position, PT::PlayerType type, Player
 
 
 void Player::Draw() {
-  TexCoords tc = Lua::Get().GetPlayerSprite(GetType(), 
-                                            GetDirection(), 
-                                            IsDying(), 
-                                            SDL_GetTicks() - m_current_action_start_time);
+  TexCoords tc = Engine::Get().Scripts()->GetPlayerSprite(GetType(), 
+							GetDirection(), 
+							IsDying(), 
+							SDL_GetTicks() - m_current_action_start_time);
 
 //   std::cerr << "type = " << GetType() << ", direction = " << GetDirection().x() << ", " << GetDirection().y()
 // 	    << ", is dying = " << IsDying() << "dt = " << SDL_GetTicks() - m_current_action_start_time << "\n";
 //   std::cerr << "tc = " << tc.left << ", " << tc.bottom << ", " << tc.width << ", " << tc.height << "\n";
 
-  Renderer::Get().DrawSprite(tc, GetPosition());
+  Engine::Get().Renderer()->DrawSprite(tc, GetPosition());
 }
 
 
-void Player::Update(const DataForController& data, double dt) {
+void Player::Update(const DataForController& /* data */, double dt) {
   m_position = GetNextPosition(dt); // (1)
 
   PerformAction(GetController()->GetNextAction()); // (2)

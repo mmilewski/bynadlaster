@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Engine.h"
 #include "Text.h"
 #include "Menu.h"
 
@@ -15,10 +15,10 @@ void Menu::DoDraw() const {
 
   glTranslatef(0, -m_camera_y, 0);
 
-  Renderer::Get().DrawQuad(Position(0,0.75), Color(0.325, 0.451, 0.827), Size(1,1)); // why does this colour looks as wrong one?
-  Renderer::Get().DrawSpriteAbsolute(TexCoords(643,869,256,146), Position(0,0), Size(1,0.75));
-  Renderer::Get().DrawSpriteAbsolute(TexCoords(653,919,89,50), Position(0.25,0.70), Size(0.349/2,0.255/2));
-  Renderer::Get().DrawSpriteAbsolute(TexCoords(742,903,175,34), Position(0.25+0.349/2,0.7+0.082/2), Size(0.686/2,0.173/2));
+  Engine::Get().Renderer()->DrawQuad(Position(0,0.75), Color(0.325, 0.451, 0.827), Size(1,1)); // why does this colour looks as wrong one?
+  Engine::Get().Renderer()->DrawSpriteAbsolute(TexCoords(643,869,256,146), Position(0,0), Size(1,0.75));
+  Engine::Get().Renderer()->DrawSpriteAbsolute(TexCoords(653,919,89,50), Position(0.25,0.70), Size(0.349/2,0.255/2));
+  Engine::Get().Renderer()->DrawSpriteAbsolute(TexCoords(742,903,175,34), Position(0.25+0.349/2,0.7+0.082/2), Size(0.686/2,0.173/2));
 
   Text text;
   text.PrintString("push fire button", Position(0.35, 0.43), Color(1,1,0));
@@ -40,9 +40,9 @@ void Menu::DoDraw() const {
   default:
     break;
   }
-  Renderer::Get().DrawSpriteAbsolute(TexCoords(747,912,8,8), Position(x,y), Size(0.031, 0.031));
+  Engine::Get().Renderer()->DrawSpriteAbsolute(TexCoords(747,912,8,8), Position(x,y), Size(0.031, 0.031));
   
-  Renderer::Get().SwapBuffers();
+  Engine::Get().Renderer()->SwapBuffers();
 }
 
 

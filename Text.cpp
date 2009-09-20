@@ -1,5 +1,5 @@
+#include "Engine.h"
 #include "Text.h"
-#include "Renderer.h"
 #include <boost/lexical_cast.hpp>
 
 
@@ -45,7 +45,7 @@ void Text::DrawGlyph(char glyph, Position position, Color color, Size size) {
     }
 
     if (ch != ' ') { // for 'space' we don't have to draw anything
-      Renderer::Get().DrawSpriteAbsolute(tc, position, color, size);
+      Engine::Get().Renderer()->DrawSpriteAbsolute(tc, position, color, size);
     }
 }
 
@@ -77,7 +77,7 @@ void Text::PrintNumber(int number, Position position, Color color, Size size) {
 
 
 void Text::PrintStage(size_t level, size_t stage, Position position, Size size) {
-  Renderer::Get().DrawSpriteAbsolute(TexCoords(224, 77, 100, 13), position, size);
+  Engine::Get().Renderer()->DrawSpriteAbsolute(TexCoords(224, 77, 100, 13), position, size);
 
   PrintStageDigit(level,
 		  Position(position.x + 6 * size.width / 10.0, position.y), 
@@ -96,13 +96,13 @@ void Text::PrintStageCenter(size_t level, size_t stage) {
 
 void Text::PrintStageDigit(size_t digit, Position position, Size size) {
   TexCoords tc(201 + digit * 8, 108, 8, 13);
-  Renderer::Get().DrawSpriteAbsolute(tc, position, size);
+  Engine::Get().Renderer()->DrawSpriteAbsolute(tc, position, size);
 }
 
 
 void Text::PrintRound(int round_num, Position position, Size size) {
   TexCoords tc(76, 943, 49, 14);
-  Renderer::Get().DrawSpriteAbsolute(tc, position, size);
+  Engine::Get().Renderer()->DrawSpriteAbsolute(tc, position, size);
   PrintRoundDigit(round_num,
 		  Position(position.x + size.width * 5.5 / 5.0, position.y), 
 		  Size(size.width / 5, size.height));
@@ -121,5 +121,5 @@ void Text::PrintRoundCenter(int round_num) {
 
 void Text::PrintRoundDigit(int digit, Position position, Size size) {
   TexCoords tc(137, 942, 91 / 9 + digit * size.width, 14);
-  Renderer::Get().DrawSpriteAbsolute(tc, position, size);
+  Engine::Get().Renderer()->DrawSpriteAbsolute(tc, position, size);
 }

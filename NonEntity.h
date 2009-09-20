@@ -17,8 +17,8 @@ public:
   bool IsAlive() const { return m_is_alive; }
   void SetAliveFlag(bool is_alive) { m_is_alive = is_alive; }
 
-
-protected:
+//protected: // public needed in AnimatedText::RegisterInLua
+public:
   virtual void DoDraw() const = 0;
   virtual void DoUpdate(double dt) = 0;
 

@@ -6,7 +6,7 @@
 
 class PlayerControllerKb : public PlayerController {
 protected:
-  void DoUpdate(const DataForController& data, double dt) const { 
+  void DoUpdate(const DataForController& /* data */, double /* dt */) const { 
 
   }
 

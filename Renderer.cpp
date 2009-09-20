@@ -1,6 +1,5 @@
 #include "Renderer.h"
 
-
 void Renderer::LoadTexture(std::string filename) {
   SDL_Surface* orgImage = IMG_Load(filename.c_str());
   if (!orgImage) {

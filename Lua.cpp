@@ -1,12 +1,17 @@
+#include "Engine.h"
+#include "NonEntityFactory.h"
 #include "Lua.h"
+
 
 Lua::Lua() {
   Init();
 }
 
+
 Lua::~Lua() {
   lua_close(m_lua_state);  
 }
+
 
 TexCoords Lua::GetPlayerSprite(PT::PlayerType type, Direction direction, bool is_dying, double duration) const {
   try {
@@ -21,27 +26,30 @@ TexCoords Lua::GetPlayerSprite(PT::PlayerType type, Direction direction, bool is
   return TexCoords(0,0,0,0); // show nothing in case of errors
 }
 
+
 void Lua::Reset() {
   lua_close(m_lua_state);
   Init();
+  Load();
 }
+
 
 void Lua::Init() {
   m_lua_state = lua_open();
-
+  luabind::open(m_lua_state);
   luaopen_base(m_lua_state);
   luaopen_math(m_lua_state);
-  
-  luabind::open(m_lua_state);
-  
-  ExportModules();
-  LoadTypes();
-  LoadFiles();
+
+  Engine::RegisterInLua(m_lua_state);
+
+  Export();
 }
+
 
 void Lua::LoadFiles() {
   luaL_dofile(m_lua_state, "scripts/player.lua");
 }
+
 
 void Lua::ExportModules() {
   luabind::module(m_lua_state) [
@@ -66,9 +74,26 @@ void Lua::ExportModules() {
 }
 
 
-void Lua::LoadTypes() {
+void Lua::ExportTypes() {
   FT::RegisterInLua(m_lua_state);
   PT::RegisterInLua(m_lua_state);
   PA::RegisterInLua(m_lua_state);
   OT::RegisterInLua(m_lua_state);
+}
+
+
+void Lua::LoadFactories() {
+  NonEntityFactory::RegisterInLua(m_lua_state);
+}
+
+
+void Lua::Load() {
+  LoadFiles();
+  LoadFactories();
+}
+
+
+void Lua::Export() {
+  ExportModules();
+  ExportTypes();
 }
