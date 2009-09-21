@@ -1,17 +1,19 @@
 #ifndef __CONSTANTS_H_INCLUDED__
 #define __CONSTANTS_H_INCLUDED__
 
-const size_t g_tiles_on_screen_in_x = 23; // at least 6 (border)
-const size_t g_tiles_on_screen_in_y = 23; // at least 4 (border)
+#include "StdAfx.h"
 
-const size_t g_max_map_width  = g_tiles_on_screen_in_x - 6;
-const size_t g_max_map_height = g_tiles_on_screen_in_y - 4;
+extern size_t g_tiles_on_screen_in_x; // at least 6 (border)
+extern size_t g_tiles_on_screen_in_y; // at least 4 (border)
 
-const size_t g_max_players = 2;
+extern size_t g_max_map_width ;
+extern size_t g_max_map_height;
 
-const size_t g_bomb_player_has_at_start = 3;
-const size_t g_fire_range_player_has_at_start = 2;
+extern size_t g_max_players;
 
-const double g_bomb_time_to_live = 3.0;  // (in seconds)
+extern size_t g_bomb_player_has_at_start;
+extern size_t g_fire_range_player_has_at_start;
+
+extern double g_bomb_time_to_live;  // (in seconds)
 
 #endif

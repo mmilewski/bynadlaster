@@ -5,6 +5,7 @@
 #include "Lua.h"
 #include "NonEntityFactory.h"
 #include "Renderer.h"
+#include "Config.h"
 
 
 // This is due to problem /w using singletons. This class should be
@@ -19,19 +20,22 @@ public:
     m_lua.reset(new Lua()); // (!) THIS GOES FIRST (!)
     m_non_entity_factory.reset(new NonEntityFactory::NonEntityFactory());
     m_renderer.reset(new Renderer::Renderer());
+    m_config.reset(new Config::Config());
 
     m_lua->Load();// (!) THIS GOES LAST (!)
   }
   
 
+  
   ~Engine() {
     // Order of destruction is improtant (lua should be destroyed at
     // the end - we often create objects (prototypes) in scripts and
     // register it in factories. 
 
-    
     m_non_entity_factory.reset();
     m_renderer.reset();
+    m_config.reset();
+
     m_lua.reset(); // (!) THIS IS DESTROYED AT THE END (!)
   }
 
@@ -51,6 +55,10 @@ public:
   RendererPtr Renderer() {
     return m_renderer;
   }
+
+  ConfigPtr Config() {
+    return m_config;
+  }
   
 
 public:
@@ -61,6 +69,8 @@ public:
 				  luabind::def("Get", &Engine::Get)
 				  ]
 			  .def("NonEntityFactory", &Engine::NonEntityFactory)
+			  .def("Renderer", &Engine::Renderer)
+			  .def("Config", &Engine::Config)
 			  ];
   }
 
@@ -69,7 +79,8 @@ private:
   LuaPtr m_lua;
   NonEntityFactoryPtr m_non_entity_factory;
   RendererPtr m_renderer;
-  
+  ConfigPtr m_config;
+
 };
 
 

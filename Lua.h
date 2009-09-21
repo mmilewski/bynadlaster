@@ -19,6 +19,8 @@ public:
   void Export();
   void Load();
 
+  lua_State* LuaState() { return m_lua_state; }
+
 protected:
   void Init();
   void Destroy();

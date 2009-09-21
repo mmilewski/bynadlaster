@@ -71,6 +71,8 @@ void Lua::ExportModules() {
 				.def("x", &Direction::x)
 				.def("y", &Direction::y)
 				];
+
+  Config::RegisterInLua(m_lua_state);
 }
 
 
