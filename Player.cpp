@@ -28,7 +28,7 @@ void Player::Draw() {
 // 	    << ", is dying = " << IsDying() << "dt = " << SDL_GetTicks() - m_current_action_start_time << "\n";
 //   std::cerr << "tc = " << tc.left << ", " << tc.bottom << ", " << tc.width << ", " << tc.height << "\n";
 
-  Engine::Get().Renderer()->DrawSprite(tc, GetPosition());
+  Engine::Get().Renderer()->DrawSpriteInCenter(tc, GetPosition());
 }
 
 
@@ -60,8 +60,8 @@ Position Player::GetNextPosition(double dt) const {
 AABB Player::GetAABB() const {
   // bounding box is a bit less then player sprite
   const Position pos = GetPosition();
-  const Position min = pos - Position( .45, .45);
-  const Position max = pos + Position( .45, .45);
+  const Position min = pos - Position( .4, .4);
+  const Position max = pos + Position( .4, .25);
   return AABB(min,max);
 }
 
@@ -69,8 +69,8 @@ AABB Player::GetAABB() const {
 AABB Player::GetNextAABB(double dt) const {
   // bounding box is a bit less then player sprite
   const Position pos = GetNextPosition(dt);
-  const Position min = pos - Position( .45, .45);
-  const Position max = pos + Position( .45, .45);
+  const Position min = pos - Position( .4, .4);
+  const Position max = pos + Position( .4, .25);
   return AABB(min,max);
 }
 

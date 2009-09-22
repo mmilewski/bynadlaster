@@ -1,8 +1,9 @@
 #ifndef __POSITION_H_INCLUDED__
 #define __POSITION_H_INCLUDED__
 
-
+#include <iostream>
 #include <boost/operators.hpp>
+
 
 struct Position : boost::equality_comparable<Position>,
                   boost::additive<Position>,
@@ -32,6 +33,7 @@ struct Position : boost::equality_comparable<Position>,
 //     return *this;
 //   }
 
+  friend std::ostream& operator<< (std::ostream& os, const Position& pos);
 
   double x;
   double y;

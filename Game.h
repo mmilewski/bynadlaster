@@ -16,6 +16,9 @@ public:
   MapPtr GetMap() { return m_map; }
   void AddObject(ObjectPtr object) { m_objects.push_back(object); }
 
+  const std::vector<ObjectPtr>& GetObjects()  { return m_objects; }
+//   const std::vector<PlayerPtr>& GetPlayers()  { return m_players; }
+
 protected:
   void CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt);
   bool HandleInputGame(const SDL_Event& event);

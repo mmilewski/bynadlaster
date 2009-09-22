@@ -12,7 +12,8 @@ Map::Map(size_t width, size_t height)
       m_map[y][x] = FT::Floor;
     }
   }
-  m_map[6][6] = FT::Wall;
+  m_map[3][6] = m_map[3][5] = m_map[3][4] = m_map[3][3] = m_map[3][2] = FT::Wall;
+  m_map[1][6] = m_map[1][5] = m_map[1][3] = m_map[1][2] = FT::Wall;
 }
 
 
@@ -37,13 +38,8 @@ void Map::Load() {
 
 
 Position Map::PositionToPositionOnMap(const Position& position) const {
-  return Position(floor(position.x-3), floor(position.y-1));
+  return Position(floor(position.x-2.5), floor(position.y-.5));
 }
-
-
-// Position Map::PositionOnMapToPosition(const Position& position_on_map) const {
-//   return position_on_map + Position(.5, .5);
-// }
 
 
 bool Map::IsFieldStandable(const Position& field_position) const {
@@ -63,7 +59,7 @@ bool Map::IsFieldStandable(double posx, double posy) const {
 
 
 void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
-  const Position tile_position = Position(x+3, y+1) + Position(.5,.5);
+  const Position tile_position = Position(x+3, y+1);
 
   switch(type) {
   case FT::Floor:
@@ -85,36 +81,34 @@ void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
 
 
 void Map::DrawBorder() {
-  const Position offset = Position(.5, .5);
-
   // right border
   for (int i = GetHeight()+1; i > 0; --i) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(495.0, 126.0, 16.0, 16.0), offset+Position(2 + GetWidth()+1, i));
-    Engine::Get().Renderer()->DrawSprite(TexCoords(671.0, 126.0, 16.0, 16.0), offset+Position(2 + GetWidth()+1 + 1, i));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(495.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1, i));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(671.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1 + 1, i));
   }
-  Engine::Get().Renderer()->DrawSprite(TexCoords(367.0, 142.0, 16.0, 16.0), offset+Position(2 + GetWidth()+1 + 1, 0));
+  Engine::Get().Renderer()->DrawSprite(TexCoords(367.0, 142.0, 16.0, 16.0), Position(2 + GetWidth()+1 + 1, 0));
 
   // left border
   for (size_t i = GetHeight()+1; i > 0; --i) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(623.0, 126.0, 16.0, 16.0), offset+Position(2 + 0, i));
-    Engine::Get().Renderer()->DrawSprite(TexCoords(455.0, 142.0, 16.0, 16.0), offset+Position(2 + 0 - 1, i));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(623.0, 126.0, 16.0, 16.0), Position(2 + 0, i));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(455.0, 142.0, 16.0, 16.0), Position(2 + 0 - 1, i));
   }
-  Engine::Get().Renderer()->DrawSprite(TexCoords(471.0, 142.0, 16.0, 16.0), offset+Position(2 + 0 - 1, 0));
+  Engine::Get().Renderer()->DrawSprite(TexCoords(471.0, 142.0, 16.0, 16.0), Position(2 + 0 - 1, 0));
 
   // top corners
-  Engine::Get().Renderer()->DrawSprite(TexCoords(431.0, 126.0, 16.0, 16.0), offset+Position(2, GetHeight()+1)); // top left
-  Engine::Get().Renderer()->DrawSprite(TexCoords(479.0, 126.0, 16.0, 16.0), offset+Position(2 + GetWidth()+1, GetHeight()+1)); // top right
+  Engine::Get().Renderer()->DrawSprite(TexCoords(431.0, 126.0, 16.0, 16.0), Position(2, GetHeight()+1)); // top left
+  Engine::Get().Renderer()->DrawSprite(TexCoords(479.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1, GetHeight()+1)); // top right
   
   // top border
   for (size_t i = 0; i < GetWidth(); i += 2) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(448.0, 126.0, 16.0, 16.0), offset+Position(2 + 1 + i, GetHeight()+1));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(448.0, 126.0, 16.0, 16.0), Position(2 + 1 + i, GetHeight()+1));
   }
   for (size_t i = 1; i < GetWidth(); i += 2) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(463.0, 126.0, 16.0, 16.0), offset+Position(2 + 1 + i, GetHeight()+1));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(463.0, 126.0, 16.0, 16.0), Position(2 + 1 + i, GetHeight()+1));
   }
 
   // bottom border
   for (size_t i = 0; i < GetWidth()+2; ++i) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0), offset+Position(2 + i, 0));
+    Engine::Get().Renderer()->DrawSprite(TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0), Position(2 + i, 0));
   }
 }

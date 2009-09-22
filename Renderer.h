@@ -11,6 +11,9 @@ public:
   void DrawSprite(TexCoords tc, Position pos, Size ts);
   void DrawSprite(TexCoords tc, Position pos);
 
+  void DrawSpriteInCenter(TexCoords tc, Position pos, Size size);
+  void DrawSpriteInCenter(TexCoords tc, Position pos);
+
   void DrawSpriteAbsolute(TexCoords tc, Position pos, Size ts);
   void DrawSpriteAbsolute(TexCoords tc, Position pos, Color color, Size size);
 

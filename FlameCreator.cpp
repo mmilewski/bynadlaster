@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "Game.h"
 #include "FlameCreator.h"
+#include "Flame.h"
 
 
 FlameCreator::FlameCreator(size_t owner_id, Position initial_position, size_t range)
@@ -8,53 +9,48 @@ FlameCreator::FlameCreator(size_t owner_id, Position initial_position, size_t ra
 }
 
 
-void FlameCreator::AddFlame(double xpos, double ypos) {
-#warning implement AddFlame. Remember about owner_id
-}
-
-
 void FlameCreator::Create(Game& game) {
   MapPtr map = game.GetMap();
-  Position pos = map->PositionToPositionOnMap(m_position);
-  size_t up(0), down(0), left(0), right(0);  // length of flame in four directions
+  const Position pos = m_position;
+  double up(0), down(0), left(0), right(0);  // length of flame in four directions
+  double length_up(0), length_left(0), length_down(0), length_right(0);
 
-  // add flames in each of four directions. Add a lot of small, collidable flames objects
-  // and a not collidable FireRepresentations object (flame that players can see in game).
+  // determine how long can flame become because of map obstacles
+  for (size_t i=1; i<=GetRange(); ++i) {
+    if (map->IsFieldStandable(pos.x,pos.y+i))
+      length_up++;
+    else
+      break;
+  }
+  for (size_t i=1; i<=GetRange(); ++i) {
+    if (map->IsFieldStandable(pos.x,pos.y-i))
+      length_down++;
+    else
+      break;
+  }
+  for (size_t i=1; i<=GetRange(); ++i) {
+    if (map->IsFieldStandable(pos.x+i,pos.y))
+      length_right++;
+    else
+      break;
+  }
+  for (size_t i=1; i<=GetRange(); ++i) {
+    if (map->IsFieldStandable(pos.x-i,pos.y))
+      length_left++;
+    else
+      break;
+  }
 
-#warning implement creating flame
-//   for (size_t i=0; i<m_range; ++i) {
-//     if (map->IsFieldStandable(pos.x, pos.y+i)) {
-//       ++up;
-//       AddFlame(pos.x, pos.y+i);
-//       AddFlame(pos.x, pos.y+i+.5);
-//     }
-//   }
+  const double flameWidth = 1.0/g_tiles_on_screen_in_x;
+  const double flameHeight = 1.0/g_tiles_on_screen_in_y;
+  up = length_up/static_cast<double>(g_tiles_on_screen_in_y);
+  down = length_down/static_cast<double>(g_tiles_on_screen_in_y);
+  left = length_left/static_cast<double>(g_tiles_on_screen_in_x);
+  right = length_right/static_cast<double>(g_tiles_on_screen_in_x);
 
-//   for (size_t i=0; i<m_range; ++i) {
-//     if (map->IsFieldStandable(pos.x, pos.y-i)) {
-//       ++down;
-//       AddFlame(pos.x, pos.y-i);
-//       AddFlame(pos.x, pos.y-i-.5);
-//     }
-//   }
-
-//   for (size_t i=0; i<m_range; ++i) {
-//     if (map->IsFieldStandable(pos.x+i, pos.y)) {
-//       ++right;
-//       AddFlame(pos.x+i, pos.y);
-//       AddFlame(pos.x+i+.5, pos.y);
-//     }
-//   }
-
-//   for (size_t i=0; i<m_range; ++i) {
-//     if (map->IsFieldStandable(pos.x-i, pos.y)) {
-//       ++left;
-//       AddFlame(pos.x-i, pos.y);
-//       AddFlame(pos.x-i-.5, pos.y);
-//     }
-//   }
-
-#warning implement creating FireRepresentation
-//   game.AddObject(ObjectPtr(new FireRepresentation(up, left, down, right)));
-
+  game.AddObject(FlamePtr(new Flame(pos+Position(1,0), Size(right,flameHeight), FD::Right)));
+  game.AddObject(FlamePtr(new Flame(pos+Position(0,1), Size(flameWidth,up), FD::Up)));
+  game.AddObject(FlamePtr(new Flame(pos-Position(length_left,0), Size(left,flameHeight), FD::Left)));
+  game.AddObject(FlamePtr(new Flame(pos-Position(0,length_down), Size(flameWidth,down), FD::Down)));
+  game.AddObject(FlamePtr(new Flame(pos, Size(flameWidth,flameHeight), FD::Center)));
 }

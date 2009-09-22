@@ -98,7 +98,8 @@ void App::Run() {
   // okna - wtedy wystarczy ustawić np. tile_width=window_ratio/GetWidth()
   Engine::Get().Renderer()->SetTileSize(Size(1.0/g_tiles_on_screen_in_x, 1.0/g_tiles_on_screen_in_y));
 
-  m_game_state = GameStatePtr(new Menu());
+//   m_game_state = GameStatePtr(new Menu());     -- it is better not to watch menu for now
+  m_game_state = GameStatePtr(new Game());
   while (true) {
 
     if (m_game_state->IsDone()) {

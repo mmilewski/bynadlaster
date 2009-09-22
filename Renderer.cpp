@@ -34,7 +34,7 @@ void Renderer::LoadTexture(std::string filename) {
 
 /// @param pos Pozycja kafla na ekranie (lewy dolny róg)
 /// @param tc Gdzie jest sprite na teksturze (w pikselach)
-/// @param ts Jakiej wielkości tile wyświetlić na ekranie (rozmiar quada)
+/// @param size Jakiej wielkości tile wyświetlić na ekranie (rozmiar quada)
 void Renderer::DrawSprite(TexCoords tc, Position pos, Size size) {
   const double tex_width = 1024;
   const double tex_height = 1024;
@@ -48,10 +48,10 @@ void Renderer::DrawSprite(TexCoords tc, Position pos, Size size) {
   const double tc_bottom = 1-tc.bottom/tex_height;
 
   glBegin(GL_QUADS);
-  glTexCoord2f(tc_left,  tc_bottom);   glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height);
-  glTexCoord2f(tc_right, tc_bottom);   glVertex2f(pos.x*m_tile_width + size.width,   pos.y*m_tile_height);
-  glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x*m_tile_width + size.width,   pos.y*m_tile_height + size.height);
-  glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x*m_tile_width,                pos.y*m_tile_height + size.height);
+  glTexCoord2f(tc_left,  tc_bottom);   glVertex2f(pos.x*m_tile_width,               pos.y*m_tile_height);
+  glTexCoord2f(tc_right, tc_bottom);   glVertex2f(pos.x*m_tile_width + size.width,  pos.y*m_tile_height);
+  glTexCoord2f(tc_right, tc_top);      glVertex2f(pos.x*m_tile_width + size.width,  pos.y*m_tile_height + size.height);
+  glTexCoord2f(tc_left,  tc_top);      glVertex2f(pos.x*m_tile_width,               pos.y*m_tile_height + size.height);
   glEnd();
 }
 
@@ -59,6 +59,20 @@ void Renderer::DrawSprite(TexCoords tc, Position pos, Size size) {
 void Renderer::DrawSprite(TexCoords tc, Position pos) {
   DrawSprite(tc, pos, Size(m_tile_width, m_tile_height));
 }
+
+
+/// @param pos Pozycja kafla na ekranie (środek)
+/// @param tc Gdzie jest sprite na teksturze (w pikselach)
+/// @param size Jakiej wielkości tile wyświetlić na ekranie (rozmiar quada - szerokość i wysokość)
+void Renderer::DrawSpriteInCenter(TexCoords tc, Position pos, Size size) {
+  DrawSprite(tc, pos-Position(size.width/2.0, size.height/2.0), size);
+}
+
+
+void Renderer::DrawSpriteInCenter(TexCoords tc, Position pos) {
+  DrawSprite(tc, pos, Size(m_tile_width, m_tile_height));
+}
+
 
 
 /* kod poniższej funkcji został ściągnięty z:

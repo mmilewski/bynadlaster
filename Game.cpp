@@ -18,20 +18,20 @@ Game::Game() {
   m_hud.reset(new Hud());
 
   m_players.push_back(PlayerPtr(new Player(0,  // id
-					   Position(8,7), 
+					   Position(4,2), 
 					   PT::White, 
 					   PlayerControllerPtr(new PlayerControllerKb()))));
 
   const size_t pid = m_players.at(0)->GetId();
   const size_t range = m_players.at(0)->GetFireRange();
 
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(3.5,1.5),range)));
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(4.5,3.5),range)));
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(19.5,6.5),range)));
-  m_objects.push_back(ObjectPtr(new BombPowerup(Position(4.5,6.5))));
-  m_objects.push_back(ObjectPtr(new BombPowerup(Position(3.5,8.5))));
-  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5.5,3.5))));
-  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(3.5,5.5))));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(3,1),range)));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(7,10),range)));
+  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(19,6),range)));
+  m_objects.push_back(ObjectPtr(new BombPowerup(Position(4,6))));
+  m_objects.push_back(ObjectPtr(new BombPowerup(Position(3,8))));
+  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5,3))));
+  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(3,5))));
 }
 
 
@@ -55,9 +55,9 @@ void Game::DoUpdate(double dt) {
           player->PerformAction(PA::GoNowhere);
         }
         break;
-//       case OT::Fire:
+      case OT::Fire:
 //         player->Burnt();
-//         break;
+        break;
 //       case OT::Enemy:
 //         player->KilledByEnemy();
 //         break;
@@ -80,13 +80,6 @@ void Game::DoUpdate(double dt) {
 //   std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
 //             << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
 
-  m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), !boost::bind(&Object::IsAlive,_1)),
-                  m_objects.end());
-
-  m_non_entities.erase(std::remove_if(m_non_entities.begin(), m_non_entities.end(), 
-				      !boost::bind(&NonEntity::IsAlive,_1)),
-		       m_non_entities.end());
-
   // collect creators from objects && players together and run them all
   std::list<CreatorPtr> all_creators;
   BOOST_FOREACH( ObjectPtr obj, m_objects ) {
@@ -100,6 +93,15 @@ void Game::DoUpdate(double dt) {
   BOOST_FOREACH( CreatorPtr creator, all_creators ) {
     creator->Create(*this);
   }
+
+  // remove dead objects
+  // NOTICE: this should happen after collection creators - else some object may not be created (bomb->fire)
+  m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), !boost::bind(&Object::IsAlive,_1)),
+                  m_objects.end());
+
+  m_non_entities.erase(std::remove_if(m_non_entities.begin(), m_non_entities.end(), 
+				      !boost::bind(&NonEntity::IsAlive,_1)),
+		       m_non_entities.end());
 }
 
 

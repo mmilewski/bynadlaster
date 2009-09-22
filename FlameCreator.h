@@ -8,12 +8,9 @@ class FlameCreator : public Creator {
 public:
   explicit FlameCreator(size_t owner_id, Position initial_position, size_t range);
   void Create(Game& game);
-  
-  const Position& GetPosition() const  { return m_position; }
-  int GetRange() const  { return m_range; }
 
-protected:
-  void AddFlame(double xpos, double ypos);
+  const Position& GetPosition() const  { return m_position; }
+  size_t GetRange() const  { return m_range; }
 
 private:
   size_t m_owner_id;

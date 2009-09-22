@@ -9,6 +9,10 @@ struct AABB {
     : min(min), max(max) {
   }
 
+  /**
+   * Returns false if AABBs are outer separated, else returns true (intersecion
+   * and inclusion)
+   */
   bool CollidesWith(const AABB& other) const;
 
   /**
