@@ -65,14 +65,15 @@ void Renderer::DrawSprite(TexCoords tc, Position pos) {
 /// @param tc Gdzie jest sprite na teksturze (w pikselach)
 /// @param size Jakiej wielkości tile wyświetlić na ekranie (rozmiar quada - szerokość i wysokość)
 void Renderer::DrawSpriteInCenter(TexCoords tc, Position pos, Size size) {
-  DrawSprite(tc, pos-Position(size.width/2.0, size.height/2.0), size);
+  const double width = size.width * g_tiles_on_screen_in_x;
+  const double height = size.height * g_tiles_on_screen_in_y;
+  DrawSprite(tc, pos-Position(width/2.0, height/2.0), size);
 }
 
 
 void Renderer::DrawSpriteInCenter(TexCoords tc, Position pos) {
-  DrawSprite(tc, pos, Size(m_tile_width, m_tile_height));
+  DrawSpriteInCenter(tc, pos, Size(m_tile_width, m_tile_height));
 }
-
 
 
 /* kod poniższej funkcji został ściągnięty z:
