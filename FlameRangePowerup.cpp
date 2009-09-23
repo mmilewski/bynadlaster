@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include "Player.h"
-#include "FireRangePowerup.h"
+#include "FlameRangePowerup.h"
 
 
 void FireRangePowerup::DoDraw() const {

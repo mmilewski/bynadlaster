@@ -10,7 +10,6 @@ Bomb::Bomb(size_t owner_id, Position position, int explosion_range)
     m_aabb(position+Position(.1,.1), position+Position(.9,.9)),
     m_owner_id(owner_id), m_explision_range(explosion_range), m_living_time(0) {
   SetAliveFlag(true);
-  std::cout << "min: " << m_aabb.GetMin() << "  max: " << m_aabb.GetMax() << "\n";
 }
 
 

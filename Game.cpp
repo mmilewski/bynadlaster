@@ -5,7 +5,7 @@
 #include "Creator.h"
 #include "Powerup.h"
 #include "BombPowerup.h"
-#include "FireRangePowerup.h"
+#include "FlameRangePowerup.h"
 
 #include "PlayerControllers.h"
 

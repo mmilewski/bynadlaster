@@ -38,10 +38,6 @@ void Map::Load() {
 
 
 Position Map::PositionToPositionOnMap(const Position& position) const {
-  // INFO: position is determined in such a way, that the offset of map is (3,1),
-  //       player's size is (1,1) and his position is determined as his lower-left corner,
-  //       so we need do move half of player's size up-right (it is (.5,.5)),
-  //       hence we get (3,1) - (.5,.5) = (-2.5,-.5). floor() usage is obvious, I think
   return Position(floor(position.x-3), floor(position.y-1));
 }
 

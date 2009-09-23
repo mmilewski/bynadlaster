@@ -26,6 +26,5 @@ void BombCreator::Create(Game& game) {
 
   if (can_place_bomb && map->IsFieldStandable(bomb_dst_pos)) {
     game.AddObject(bomb);
-    std::cout << "Bomb placed at " << bomb_dst_pos << "\n";
   }
 }
