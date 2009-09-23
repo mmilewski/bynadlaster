@@ -27,7 +27,7 @@ struct FT {
 struct OT {
   enum ObjectType {
     Enemy,
-    Fire,
+    Flame,
     Powerup,
     Bomb
   };
@@ -38,7 +38,7 @@ struct OT {
 				luabind::class_<OT>("OT")
 				.enum_("ObjectType") [
 						      luabind::value("Enemy",   OT::Enemy),
-						      luabind::value("Fire",    OT::Fire),
+						      luabind::value("Flame",    OT::Flame),
 						      luabind::value("Powerup", OT::Powerup),
 						      luabind::value("Bomb",    OT::Bomb)
 						      ]

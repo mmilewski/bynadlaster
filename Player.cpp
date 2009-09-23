@@ -14,15 +14,14 @@ Player::Player(size_t id, Position initial_position, PT::PlayerType type, Player
     m_fire_range(g_fire_range_player_has_at_start) {
 
   SetController(controller);
-
 }
 
 
 void Player::Draw() {
   TexCoords tc = Engine::Get().Scripts()->GetPlayerSprite(GetType(), 
-							GetDirection(), 
-							IsDying(), 
-							SDL_GetTicks() - m_current_action_start_time);
+                                                          GetDirection(), 
+                                                          IsDying(), 
+                                                          SDL_GetTicks() - m_current_action_start_time);
 
 //   std::cerr << "type = " << GetType() << ", direction = " << GetDirection().x() << ", " << GetDirection().y()
 // 	    << ", is dying = " << IsDying() << "dt = " << SDL_GetTicks() - m_current_action_start_time << "\n";
@@ -48,6 +47,11 @@ void Player::GivePowerup(PowerupPtr powerup) {
 }
 
 
+void Player::Burnt() {
+#warning TODO: implement what happens when player is in fire
+}
+
+
 Position Player::GetNextPosition(double dt) const {
   const double speed = 7;
   const Position pos = GetPosition();
@@ -59,7 +63,7 @@ Position Player::GetNextPosition(double dt) const {
 
 AABB Player::GetAABB() const {
   // bounding box is a bit less then player sprite
-  const Position pos = GetPosition();
+  const Position pos = GetCenterPosition();
   const Position min = pos - Position( .4, .4);
   const Position max = pos + Position( .4, .25);
   return AABB(min,max);
@@ -68,7 +72,7 @@ AABB Player::GetAABB() const {
 
 AABB Player::GetNextAABB(double dt) const {
   // bounding box is a bit less then player sprite
-  const Position pos = GetNextPosition(dt);
+  const Position pos = GetNextCenterPosition(dt);
   const Position min = pos - Position( .4, .4);
   const Position max = pos + Position( .4, .25);
   return AABB(min,max);

@@ -3,6 +3,6 @@
 
 
 Powerup::Powerup(Position position)
-  : m_position(position), m_aabb(position-Position(.5,.5), position+Position(.5,.5)) {
+  : m_position(position), m_aabb(position, position+Position(1,1)) {
   SetAliveFlag(true);
 }

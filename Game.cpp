@@ -18,7 +18,7 @@ Game::Game() {
   m_hud.reset(new Hud());
 
   m_players.push_back(PlayerPtr(new Player(0,  // id
-					   Position(4,2), 
+					   Position(6,8), 
 					   PT::White, 
 					   PlayerControllerPtr(new PlayerControllerKb()))));
 
@@ -55,8 +55,8 @@ void Game::DoUpdate(double dt) {
           player->PerformAction(PA::GoNowhere);
         }
         break;
-      case OT::Fire:
-//         player->Burnt();
+      case OT::Flame:
+        player->Burnt();
         break;
 //       case OT::Enemy:
 //         player->KilledByEnemy();
@@ -73,12 +73,35 @@ void Game::DoUpdate(double dt) {
     }
   }
 
+  // check collisions object-object - time complexity O(n^2)
+  std::vector<ObjectPtr>::iterator outer = m_objects.begin(), inner;
+  for( ; outer!=m_objects.end(); ++outer ) {
+    if (false==(*outer)->IsAlive())
+      continue;
+    inner = outer;
+    OT::ObjectType outerType = (*outer)->GetType();
+    while (++inner!=m_objects.end()) {
+      if ((*inner)->IsAlive() && (*outer)->GetAABB().CollidesWith((*inner)->GetAABB())) {   // is alive && collides
+        OT::ObjectType innerType = (*inner)->GetType();
+        // bomb <-> flame
+        {
+          if (innerType==OT::Bomb && outerType==OT::Flame) {
+            boost::dynamic_pointer_cast<Bomb>(*inner)->Detonate();
+          }
+          else if (innerType==OT::Flame && outerType==OT::Bomb) {
+            boost::dynamic_pointer_cast<Bomb>(*outer)->Detonate();
+          }
+        }
+      }
+    }
+  }
+
   DataForController data_for_controller;
   std::for_each(m_players.begin(), m_players.end(), boost::bind(&Player::Update, _1, data_for_controller, dt));
   std::for_each(m_non_entities.begin(), m_non_entities.end(), boost::bind(&NonEntity::Update, _1, dt));
 
-//   std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
-//             << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
+  //   std::cout << "#bombs = " << m_players.at(0)->GetBombCount() << "  "
+  //             << "fireRange = " << m_players.at(0)->GetFireRange() << "\n";
 
   // collect creators from objects && players together and run them all
   std::list<CreatorPtr> all_creators;
@@ -107,20 +130,14 @@ void Game::DoUpdate(double dt) {
 
 void Game::CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt) {
   // check collisions with four corners of player sprite
-  AABB aabb = player->GetNextAABB(dt);
-  Position ppos = player->GetNextPosition(dt);
-  Position max = aabb.GetMax();
-  Position min = aabb.GetMin();
+  const AABB aabb = player->GetNextAABB(dt);
+  const Position max = aabb.GetMax();
+  const Position min = aabb.GetMin();
 
   if (!map->IsFieldStandable(min)
       || !map->IsFieldStandable(max)
       || !map->IsFieldStandable(Position(max.x, min.y))
       || !map->IsFieldStandable(Position(min.x, max.y)))
-//   if (!map->IsFieldStandable(ppos + Position(-1, 0))
-//       || !map->IsFieldStandable(ppos + Position( 1,  0))
-//       || !map->IsFieldStandable(ppos + Position( 0, -1))
-//       || !map->IsFieldStandable(ppos + Position( 0,  1))
-//       )
     player->PerformAction(PA::GoNowhere);
 }
 
@@ -184,7 +201,7 @@ bool Game::HandleInputGame(const SDL_Event& event) {
 bool Game::HandleInputPlayers(const SDL_Event& event) {
   for (size_t player_id = 0; player_id < m_players.size(); ++player_id) {
     if (m_players.at(player_id)->HandleInput(event)) {
-     return true;
+      return true;
     }      
   }
   return false;

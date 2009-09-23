@@ -16,6 +16,7 @@ public:
   void Update(double dt)  { DoUpdate(dt); }
   OT::ObjectType GetType() const  { return DoGetType(); }
   Position GetPosition() const  { return DoGetPosition(); }
+  Position GetCenterPosition() const  { return DoGetCenterPosition(); }
   AABB GetAABB() const  { return DoGetAABB(); }
   bool IsAlive() const  { return m_is_alive; }
   void SetAliveFlag(bool flag)  { m_is_alive = flag; }
@@ -27,6 +28,7 @@ protected:
   virtual void DoUpdate(double dt) = 0;
   virtual OT::ObjectType DoGetType() const = 0;
   virtual Position DoGetPosition() const = 0;
+  virtual Position DoGetCenterPosition() const = 0;
   virtual AABB DoGetAABB() const = 0;
 
 private:

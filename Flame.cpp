@@ -6,8 +6,8 @@
 
 Flame::Flame(Position position, Size size, FD::FlameDirection direction)
   : m_position(position),
-    m_aabb(position-Position(.5, .5),
-           position+Position(size.width+.5, size.height+.5)),
+    m_aabb(position,
+           position+Position(size.width*g_tiles_on_screen_in_x, size.height*g_tiles_on_screen_in_y)),
     m_size(size),
     m_direction(direction),
     m_anim_frame_num(0),

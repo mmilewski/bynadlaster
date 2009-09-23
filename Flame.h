@@ -21,8 +21,10 @@ public :
 protected:
   void DoDraw() const;
   void DoUpdate(double dt);
-  OT::ObjectType DoGetType() const { return OT::Fire; }
+  OT::ObjectType DoGetType() const { return OT::Flame; }
   Position DoGetPosition() const { return m_position; }
+  Position DoGetCenterPosition() const  { return GetPosition()+Position(m_size.width*g_tiles_on_screen_in_x/2.0,
+                                                                        m_size.height*g_tiles_on_screen_in_y/2.0); }
   AABB DoGetAABB() const { return m_aabb; }
   
 private:

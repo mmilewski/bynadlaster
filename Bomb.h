@@ -14,6 +14,7 @@ protected:
   void DoUpdate(double dt);
   OT::ObjectType DoGetType() const { return OT::Bomb; }
   Position DoGetPosition() const { return m_position; }
+  Position DoGetCenterPosition() const  { return GetPosition() + Position(.5,.5); }
   AABB DoGetAABB() const { return m_aabb; }
   
 private:

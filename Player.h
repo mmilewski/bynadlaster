@@ -24,13 +24,15 @@ public:
   size_t GetFireRange()  { return m_fire_range; }
   void GivePowerup(PowerupPtr powerup);
 //   void KilledByEnemy();
-//   void Burnt();
+  void Burnt();
 
   bool HandleInput(const SDL_Event& event);
 
   // getters
   const Position& GetPosition() const { return m_position; }
+  Position GetCenterPosition() const { return GetPosition() + Position(.5,.5); }
   Position GetNextPosition(double dt) const;
+  Position GetNextCenterPosition(double dt) const { return GetNextPosition(dt) + Position(.5,.5); }
   const Direction& GetDirection() const { return m_direction; }
 
   AABB GetAABB() const;

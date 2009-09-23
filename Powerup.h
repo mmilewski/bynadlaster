@@ -16,6 +16,7 @@ protected:
 //   virtual void DoUpdate(double dt) = 0;
   OT::ObjectType DoGetType() const { return OT::Powerup; }
   virtual Position DoGetPosition() const { return m_position; }
+  virtual Position DoGetCenterPosition() const { return m_position+Position(.5,.5); }
   virtual AABB DoGetAABB() const { return m_aabb; }
   
 private:
