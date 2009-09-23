@@ -300,6 +300,10 @@ void Renderer::DrawSpriteAbsolute(TexCoords tc, Position pos, Color color, Size 
 
 
 void Renderer::DrawQuad(Position pos, Color color, Size size) {
+  glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_LIGHTING);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -312,12 +316,18 @@ void Renderer::DrawQuad(Position pos, Color color, Size size) {
   glVertex2f(pos.x,            pos.y+size.height);
   glEnd();
 
-  glColor4f(1,1,1,1);
-
-  glDisable(GL_BLEND);
+  glPopAttrib();
 }
 
 
 void Renderer::SwapBuffers() {
   SDL_GL_SwapBuffers();
+}
+
+
+void Renderer::DrawAABB(const AABB& aabb) {
+  Position size(aabb.GetMax()-aabb.GetMin());
+  DrawQuad(Position(aabb.GetMin().x/g_tiles_on_screen_in_x, aabb.GetMin().y/g_tiles_on_screen_in_y),
+           Color(1, 1, 0, .7),
+           Size(size.x/g_tiles_on_screen_in_x, size.y/g_tiles_on_screen_in_y));
 }

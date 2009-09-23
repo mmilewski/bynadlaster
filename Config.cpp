@@ -2,11 +2,22 @@
 #include "Config.h"
 
 
+bool Config::Boolean(const std::string& var_name) {
+  lua_State* lua = Engine::Get().Scripts()->LuaState();
+  lua_getglobal(lua, ("CONFIG_" + var_name).c_str());
+  if (!lua_isboolean(lua, -1)) {
+    std::cerr << std::string("Config::Boolean expected boolean value when fetching variable ") + "CONFIG_" + var_name + "\n";
+    return 0;
+  }
+  return lua_toboolean(lua, -1);
+}
+
+
 int Config::Int(const std::string& var_name) {
   lua_State* lua = Engine::Get().Scripts()->LuaState();
   lua_getglobal(lua, ("CONFIG_" + var_name).c_str());
   if (!lua_isnumber(lua, -1)) {
-    std::cerr << std::string("Config::Int expected integer value when fetchign variable ") + "CONFIG_" + var_name + "\n";
+    std::cerr << std::string("Config::Int expected integer value when fetching variable ") + "CONFIG_" + var_name + "\n";
     return 0;
   }
   return lua_tointeger(lua, -1);
@@ -17,7 +28,7 @@ double Config::Double(const std::string& var_name) {
   lua_State* lua = Engine::Get().Scripts()->LuaState();
   lua_getglobal(lua, ("CONFIG_" + var_name).c_str());
   if (!lua_isnumber(lua, -1)) {
-    std::cerr << std::string("Config::Int expected integer value when fetchign variable ") + "CONFIG_" + var_name + "\n";
+    std::cerr << std::string("Config::Double expected double value when fetching variable ") + "CONFIG_" + var_name + "\n";
     return 0;
   }
   return lua_tonumber(lua, -1);
@@ -28,7 +39,7 @@ std::string Config::String(const std::string& var_name) {
   lua_State* lua = Engine::Get().Scripts()->LuaState();
   lua_getglobal(lua, ("CONFIG_" + var_name).c_str());
   if (!lua_isstring(lua, -1)) {
-    std::cerr << std::string("Config::Int expected integer value when fetchign variable ") + "CONFIG_" + var_name + "\n";
+    std::cerr << std::string("Config::String expected string value when fetching variable ") + "CONFIG_" + var_name + "\n";
     return 0;
   }
   return lua_tostring(lua, -1);
@@ -52,4 +63,5 @@ void Config::UpdateGlobalConstants() {
   g_bomb_player_has_at_start = Config::Int("BombPlayerHasAtStart");
   g_fire_range_player_has_at_start = Config::Int("FireRangePlayerHasAtStart");
   g_bomb_time_to_live = Config::Double("BombTimeToLive");
+  g_render_aabbs = Config::Boolean("RenderAABBs");
 }

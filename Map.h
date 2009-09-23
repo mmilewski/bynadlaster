@@ -1,9 +1,9 @@
 #ifndef __MAP_H_INCLUDED__
 #define __MAP_H_INCLUDED__
 
-
 #include <boost/multi_array.hpp>
 #include "StdAfx.h"
+#include "AABB.h"
 
 
 class Map {
@@ -16,6 +16,10 @@ public:
 
   size_t GetWidth() const { return m_width; }
   size_t GetHeight() const { return m_height; }
+  FT::FieldType GetFieldType(size_t x, size_t y) const  { return y<GetHeight() && x<GetWidth() ? m_map[y][x] : FT::Wall; }
+  void SetFieldType(size_t x, size_t y, FT::FieldType type)  { m_map[y][x] = type; }
+  AABB GetFieldAABB(size_t x, size_t y)  { return AABB(Position(3+x, 1+y) + Position(.0,.0),
+                                                       Position(3+x+1, 1+y+1) - Position(.0,.0)); }
 
   Position PositionToPositionOnMap(const Position& position) const;
 

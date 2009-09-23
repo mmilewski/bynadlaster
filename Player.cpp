@@ -28,6 +28,8 @@ void Player::Draw() {
 //   std::cerr << "tc = " << tc.left << ", " << tc.bottom << ", " << tc.width << ", " << tc.height << "\n";
 
   Engine::Get().Renderer()->DrawSprite(tc, GetPosition());
+  if (g_render_aabbs)
+    Engine::Get().Renderer()->DrawAABB(GetAABB());
 }
 
 
@@ -64,8 +66,8 @@ Position Player::GetNextPosition(double dt) const {
 AABB Player::GetAABB() const {
   // bounding box is a bit less then player sprite
   const Position pos = GetCenterPosition();
-  const Position min = pos - Position( .4, .4);
-  const Position max = pos + Position( .4, .25);
+  const Position min = pos - Position( .35, .4);
+  const Position max = pos + Position( .35, .25);
   return AABB(min,max);
 }
 
@@ -73,8 +75,8 @@ AABB Player::GetAABB() const {
 AABB Player::GetNextAABB(double dt) const {
   // bounding box is a bit less then player sprite
   const Position pos = GetNextCenterPosition(dt);
-  const Position min = pos - Position( .4, .4);
-  const Position max = pos + Position( .4, .25);
+  const Position min = pos - Position( .37, .42);
+  const Position max = pos + Position( .37, .25);
   return AABB(min,max);
 }
 

@@ -5,6 +5,7 @@
 #include "Creator.h"
 #include "Powerup.h"
 #include "BombPowerup.h"
+#include "Flame.h"
 #include "FlameRangePowerup.h"
 
 #include "PlayerControllers.h"
@@ -43,6 +44,10 @@ void Game::DoUpdate(double dt) {
 
   BOOST_FOREACH(PlayerPtr& player, m_players) {
     CheckIfPlayerCollidesWithMap(m_map, player, dt);
+  }
+
+  BOOST_FOREACH(ObjectPtr& object, m_objects) {
+    CheckIfObjectCollidesWithMap(m_map, object, dt);
   }
 
   BOOST_FOREACH(PlayerPtr& player, m_players) {
@@ -130,15 +135,34 @@ void Game::DoUpdate(double dt) {
 
 void Game::CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt) {
   // check collisions with four corners of player sprite
-  const AABB aabb = player->GetNextAABB(dt);
-  const Position max = aabb.GetMax();
-  const Position min = aabb.GetMin();
+  const AABB player_aabb = player->GetNextAABB(dt);
+  const Position max = player_aabb.GetMax();
+  const Position min = player_aabb.GetMin();
 
   if (!map->IsFieldStandable(min)
       || !map->IsFieldStandable(max)
       || !map->IsFieldStandable(Position(max.x, min.y))
       || !map->IsFieldStandable(Position(min.x, max.y)))
     player->PerformAction(PA::GoNowhere);
+}
+
+
+void Game::CheckIfObjectCollidesWithMap(const MapPtr& map, ObjectPtr& object, double dt) {
+  if (object->GetType()!=OT::Flame)
+    return;
+  FlamePtr flame = boost::dynamic_pointer_cast<Flame>(object);
+  const AABB flame_aabb = flame->GetAABB();
+  for (size_t y=0; y < map->GetHeight(); ++y) {
+    for (size_t x=0; x < map->GetWidth(); ++x) {
+      const AABB field_aabb = map->GetFieldAABB(x,y);
+      if (map->GetFieldType(x, y)==FT::Box && field_aabb.CollidesWith(flame_aabb)) {  // field is box && aabbs collide
+//         std::cout << "Field AABB: " << field_aabb.GetMin() << " " << field_aabb.GetMax() << "\n"
+//                   << "Flame AABB: " << flame_aabb.GetMin() << " " << flame_aabb.GetMax() << "\n";
+        map->SetFieldType(x, y, FT::Floor);
+      }
+    }
+  }
+#warning TODO: add burning box
 }
 
 

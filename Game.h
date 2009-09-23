@@ -21,6 +21,7 @@ public:
 
 protected:
   void CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt);
+  void CheckIfObjectCollidesWithMap(const MapPtr& map, ObjectPtr& object, double dt);
   bool HandleInputGame(const SDL_Event& event);
   bool HandleInputPlayers(const SDL_Event& event);
 

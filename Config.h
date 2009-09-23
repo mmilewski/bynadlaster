@@ -10,6 +10,7 @@ public:
     Update();
   }
 
+  bool Boolean(const std::string& var_name);
   int Int(const std::string& var_name);
   double Double(const std::string& var_name);
   std::string String(const std::string& var_name);
@@ -19,6 +20,7 @@ public:
     luabind::module(lua) [
 			  luabind::class_<Config>("Config")
 			  .def(luabind::constructor<>())
+			  .def("Boolean", &Config::Boolean)
 			  .def("Int", &Config::Int)
 			  .def("Double", &Config::Double)
 			  .def("String", &Config::String)

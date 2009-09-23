@@ -14,6 +14,8 @@ Map::Map(size_t width, size_t height)
   }
   m_map[3][6] = m_map[3][5] = m_map[3][4] = m_map[3][3] = m_map[3][2] = FT::Wall;
   m_map[1][6] = m_map[1][5] = m_map[1][3] = m_map[1][2] = FT::Wall;
+
+  m_map[7][9] = m_map[7][5] = m_map[5][7] = m_map[9][7] = FT::Box;
 }
 
 
@@ -46,7 +48,7 @@ bool Map::IsFieldStandable(const Position& field_position) const {
   const Position on_map_pos = PositionToPositionOnMap(field_position);
   const int x = on_map_pos.x;
   const int y = on_map_pos.y;
-  if (x<0 || static_cast<unsigned>(x)>=GetWidth() || y<0 || static_cast<unsigned>(y)>=GetHeight())
+  if (x<0 || static_cast<size_t>(x)>=GetWidth() || y<0 || static_cast<size_t>(y)>=GetHeight())
     return false;
 
   return m_map[y][x]==FT::Floor;
@@ -72,6 +74,7 @@ void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
     break;
   case FT::Box:
     Engine::Get().Renderer()->DrawSprite(TexCoords(399.0, 126.0, 16.0, 16.0), tile_position);
+    Engine::Get().Renderer()->DrawAABB(GetFieldAABB(x,y));
     break;
   case FT::Wall:
     Engine::Get().Renderer()->DrawSprite(TexCoords(415.0, 126.0, 16.0, 16.0), tile_position);
@@ -81,34 +84,36 @@ void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
 
 
 void Map::DrawBorder() {
+  RendererPtr renderer = Engine::Get().Renderer();
+
   // right border
   for (int i = GetHeight()+1; i > 0; --i) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(495.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1, i));
-    Engine::Get().Renderer()->DrawSprite(TexCoords(671.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1 + 1, i));
+    renderer->DrawSprite(TexCoords(495.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1, i));
+    renderer->DrawSprite(TexCoords(671.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1 + 1, i));
   }
-  Engine::Get().Renderer()->DrawSprite(TexCoords(367.0, 142.0, 16.0, 16.0), Position(2 + GetWidth()+1 + 1, 0));
+  renderer->DrawSprite(TexCoords(367.0, 142.0, 16.0, 16.0), Position(2 + GetWidth()+1 + 1, 0));
 
   // left border
   for (size_t i = GetHeight()+1; i > 0; --i) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(623.0, 126.0, 16.0, 16.0), Position(2 + 0, i));
-    Engine::Get().Renderer()->DrawSprite(TexCoords(455.0, 142.0, 16.0, 16.0), Position(2 + 0 - 1, i));
+    renderer->DrawSprite(TexCoords(623.0, 126.0, 16.0, 16.0), Position(2 + 0, i));
+    renderer->DrawSprite(TexCoords(455.0, 142.0, 16.0, 16.0), Position(2 + 0 - 1, i));
   }
-  Engine::Get().Renderer()->DrawSprite(TexCoords(471.0, 142.0, 16.0, 16.0), Position(2 + 0 - 1, 0));
+  renderer->DrawSprite(TexCoords(471.0, 142.0, 16.0, 16.0), Position(2 + 0 - 1, 0));
 
   // top corners
-  Engine::Get().Renderer()->DrawSprite(TexCoords(431.0, 126.0, 16.0, 16.0), Position(2, GetHeight()+1)); // top left
-  Engine::Get().Renderer()->DrawSprite(TexCoords(479.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1, GetHeight()+1)); // top right
+  renderer->DrawSprite(TexCoords(431.0, 126.0, 16.0, 16.0), Position(2, GetHeight()+1)); // top left
+  renderer->DrawSprite(TexCoords(479.0, 126.0, 16.0, 16.0), Position(2 + GetWidth()+1, GetHeight()+1)); // top right
   
   // top border
   for (size_t i = 0; i < GetWidth(); i += 2) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(448.0, 126.0, 16.0, 16.0), Position(2 + 1 + i, GetHeight()+1));
+    renderer->DrawSprite(TexCoords(448.0, 126.0, 16.0, 16.0), Position(2 + 1 + i, GetHeight()+1));
   }
   for (size_t i = 1; i < GetWidth(); i += 2) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(463.0, 126.0, 16.0, 16.0), Position(2 + 1 + i, GetHeight()+1));
+    renderer->DrawSprite(TexCoords(463.0, 126.0, 16.0, 16.0), Position(2 + 1 + i, GetHeight()+1));
   }
 
   // bottom border
   for (size_t i = 0; i < GetWidth()+2; ++i) {
-    Engine::Get().Renderer()->DrawSprite(TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0), Position(2 + i, 0));
+    renderer->DrawSprite(TexCoords(543.0 + 16 * (i % 5), 126.0, 16.0, 16.0), Position(2 + i, 0));
   }
 }

@@ -2,6 +2,7 @@
 #define __RENDERER_H_INCLUDED__
 
 #include "StdAfx.h"
+#include "AABB.h"
 
 
 class Renderer {
@@ -22,6 +23,8 @@ public:
   void SetTileSize(Size size)  { m_tile_width = size.width; m_tile_height = size.height; }
   
   void SwapBuffers();
+
+  void DrawAABB(const AABB& aabb);
 
 protected:
   SDL_Surface* flip(SDL_Surface *in, bool x, bool y, bool rgba);

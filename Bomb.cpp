@@ -21,6 +21,8 @@ void Bomb::DoDraw() const {
   const double tile_height_in_px = 16.0;
   TexCoords tc((470.0+tile_width_in_px*m_anim_frame_num), 16.0, tile_width_in_px, tile_height_in_px);
   Engine::Get().Renderer()->DrawSprite(tc, GetPosition());
+  if (g_render_aabbs)
+    Engine::Get().Renderer()->DrawAABB(GetAABB());
 }
 
 

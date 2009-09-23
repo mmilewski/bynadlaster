@@ -8,6 +8,8 @@ Flame::Flame(Position position, Size size, FD::FlameDirection direction)
   : m_position(position),
     m_aabb(position,
            position+Position(size.width*g_tiles_on_screen_in_x, size.height*g_tiles_on_screen_in_y)),
+//     m_aabb(position+Position(.1,.1),
+//            position+Position(size.width*g_tiles_on_screen_in_x-0.1, size.height*g_tiles_on_screen_in_y-.1)),
     m_size(size),
     m_direction(direction),
     m_anim_frame_num(0),
@@ -35,6 +37,8 @@ void Flame::DoDraw() const {
     assert(false && "Unknown flame direction");
 
   Engine::Get().Renderer()->DrawSprite(tc, GetPosition(), m_size);
+  if (g_render_aabbs)
+    Engine::Get().Renderer()->DrawAABB(GetAABB());
 }
 
 

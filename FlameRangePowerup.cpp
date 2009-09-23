@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "Player.h"
 #include "FlameRangePowerup.h"
+#include "Constants.h"
 
 
 void FireRangePowerup::DoDraw() const {
@@ -13,6 +14,8 @@ void FireRangePowerup::DoDraw() const {
   const int m_anim_frame_num = 0;
   TexCoords tc((534.0+tile_width_in_px*m_anim_frame_num), 16.0, tile_width_in_px, tile_height_in_px);
   Engine::Get().Renderer()->DrawSpriteInCenter(tc, GetCenterPosition());
+  if (g_render_aabbs)
+    Engine::Get().Renderer()->DrawAABB(GetAABB());
 }
 
 

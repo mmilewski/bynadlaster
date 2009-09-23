@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "Player.h"
 #include "BombPowerup.h"
+#include "Constants.h"
 
 
 void BombPowerup::DoDraw() const {
@@ -16,6 +17,8 @@ void BombPowerup::DoDraw() const {
 // these two are semanticaly equal
 //   Engine::Get().Renderer()->DrawSprite(tc, GetPosition());
   Engine::Get().Renderer()->DrawSpriteInCenter(tc, GetCenterPosition());
+  if (g_render_aabbs)
+    Engine::Get().Renderer()->DrawAABB(GetAABB());
 }
 
 
