@@ -4,7 +4,7 @@
 #include "Constants.h"
 
 
-void FireRangePowerup::DoDraw() const {
+void FlameRangePowerup::DoDraw() const {
   if(!IsAlive()) {
     return;
   }
@@ -19,7 +19,7 @@ void FireRangePowerup::DoDraw() const {
 }
 
 
-void FireRangePowerup::DoUpdate(double /* dt */) {
+void FlameRangePowerup::DoUpdate(double /* dt */) {
   if(!IsAlive())
     return;
 }

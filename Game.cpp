@@ -23,16 +23,16 @@ Game::Game() {
 					   PT::White, 
 					   PlayerControllerPtr(new PlayerControllerKb()))));
 
-  const size_t pid = m_players.at(0)->GetId();
-  const size_t range = m_players.at(0)->GetFireRange();
+  PlayerPtr owner = m_players.at(0);
+  const size_t range = m_players.at(0)->GetFlameRange();
 
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(3,1),range)));
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(7,10),range)));
-  m_objects.push_back(ObjectPtr(new Bomb(pid,Position(19,6),range)));
+  owner->PlaceBomb(Position(3,1),range);
+  owner->PlaceBomb(Position(7,10),range);
+  owner->PlaceBomb(Position(19,6),range);
   m_objects.push_back(ObjectPtr(new BombPowerup(Position(4,6))));
   m_objects.push_back(ObjectPtr(new BombPowerup(Position(3,8))));
-  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(5,3))));
-  m_objects.push_back(ObjectPtr(new FireRangePowerup(Position(3,5))));
+  m_objects.push_back(ObjectPtr(new FlameRangePowerup(Position(5,3))));
+  m_objects.push_back(ObjectPtr(new FlameRangePowerup(Position(3,5))));
 }
 
 
@@ -123,7 +123,7 @@ void Game::DoUpdate(double dt) {
   }
 
   // remove dead objects
-  // NOTICE: this should happen after collection creators - else some object may not be created (bomb->fire)
+  // NOTICE: this should happen after collection creators - else some object may not be created (bomb->flame)
   m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), !boost::bind(&Object::IsAlive,_1)),
                   m_objects.end());
 

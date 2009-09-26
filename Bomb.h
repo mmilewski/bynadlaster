@@ -2,11 +2,13 @@
 #define __BOMB_H_INCLUDED__
 
 #include "Object.h"
+#include "Player.h"
 
 
 class Bomb : public Object {
 public :
-  explicit Bomb(size_t owner_id, Position position, int explosion_range);
+  explicit Bomb(PlayerPtr owner, Position position, int explosion_range);
+//   explicit Bomb(size_t owner_id, Position position, int explosion_range);
   void Detonate();
     
 protected:
@@ -22,6 +24,7 @@ private:
   Position m_position;
   double m_time_from_last_frame_switch;
   AABB m_aabb;
+  PlayerPtr m_owner;
   size_t m_owner_id;
   size_t m_explision_range;
   double m_living_time;

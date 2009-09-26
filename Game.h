@@ -18,6 +18,7 @@ public:
 
   const std::vector<ObjectPtr>& GetObjects()  { return m_objects; }
 //   const std::vector<PlayerPtr>& GetPlayers()  { return m_players; }
+  PlayerPtr GetPlayerById(size_t id)  { return *(find_if(m_players.begin(), m_players.end(), boost::bind(&Player::GetId,_1)==id)); }
 
 protected:
   void CheckIfPlayerCollidesWithMap(const MapPtr& map, PlayerPtr& player, double dt);

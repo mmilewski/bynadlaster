@@ -17,12 +17,16 @@ public:
   void PerformAction(PA::PlayerAction action);
   void StopAction(PA::PlayerAction action);
 
-  // methods mainly for collision handling
   void IncreaseBombCount()  { m_all_bomb_count++; }
-  size_t GetBombCount()  { return m_all_bomb_count; }
-  void IncreaseFireRange()  { m_fire_range++; }
-  size_t GetFireRange()  { return m_fire_range; }
+  size_t GetAllBombCount()  { return m_all_bomb_count; }
+  size_t GetUsedBombCount()  { return m_used_bomb_count; }
+  void IncreaseUsedBombCount()  { m_used_bomb_count++; }
+  void DecreaseUsedBombCount()  { m_used_bomb_count--; }
+  size_t GetAvailableBombCount()  { return GetAllBombCount() - GetUsedBombCount(); }
+  void IncreaseFlameRange()  { m_flame_range++; }
+  size_t GetFlameRange()  { return m_flame_range; }
   void GivePowerup(PowerupPtr powerup);
+  // methods mainly for collision handling
 //   void KilledByEnemy();
   void Burnt();
 
@@ -46,6 +50,12 @@ public:
   bool IsDying() const { return m_is_dying; }
   void Die() { SetDie(true); }
   void SetDie(bool die) { m_is_dying = die; }
+
+  /** Sets bomb at player's position and with player's flame range */
+  void PlaceBomb();
+
+  /** Sets bomb at custom position and with custom flame range */
+  void PlaceBomb(const Position& position, size_t range);
 
   std::list<CreatorPtr>& GetAllCreators()  { return m_creators; }
 
@@ -71,8 +81,9 @@ private:
   size_t m_current_action_start_time;
   bool   m_is_dying;
 
-  size_t m_all_bomb_count;     // number of bomb that player can use at all (at all, NOT now)
-  size_t m_fire_range;         // how meny fields player's bomb's fire covers
+  size_t m_all_bomb_count;     // number of bombs that player can use at all (at all, NOT now)
+  size_t m_used_bomb_count;    // number of bombs in use (placed but not detonated yet)
+  size_t m_flame_range;         // how meny fields player's bomb's flame covers
 
   PlayerControllerPtr m_controller; // chooses action for player to perform
 };

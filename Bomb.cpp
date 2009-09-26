@@ -4,17 +4,33 @@
 #include "FlameCreator.h"
 
 
-Bomb::Bomb(size_t owner_id, Position position, int explosion_range)
-  : m_anim_frame_num(0), m_position(position), m_time_from_last_frame_switch(.0),
-//     m_aabb(position-Position(.4,.4), position+Position(.4,.4)),
+Bomb::Bomb(PlayerPtr owner, Position position, int explosion_range)
+  : m_anim_frame_num(0),
+    m_position(position),
+    m_time_from_last_frame_switch(.0),
     m_aabb(position+Position(.1,.1), position+Position(.9,.9)),
-    m_owner_id(owner_id), m_explision_range(explosion_range), m_living_time(0) {
+    m_owner(owner),
+    m_owner_id(owner->GetId()),
+    m_explision_range(explosion_range),
+    m_living_time(0) {
   SetAliveFlag(true);
 }
 
 
+// Bomb::Bomb(size_t owner_id, Position position, int explosion_range)
+//   : m_anim_frame_num(0),
+//     m_position(position),
+//     m_time_from_last_frame_switch(.0),
+//     m_aabb(position+Position(.1,.1), position+Position(.9,.9)),
+//     m_owner_id(owner_id),
+//     m_explision_range(explosion_range),
+//     m_living_time(0) {
+//   SetAliveFlag(true);
+// }
+
+
 void Bomb::DoDraw() const {
-  if(!IsAlive())
+  if (!IsAlive())
     return;
 
   const double tile_width_in_px = 16.0;
@@ -46,8 +62,9 @@ void Bomb::DoUpdate(double dt) {
 
 
 void Bomb::Detonate() {
-  if(!IsAlive())
+  if (!IsAlive())
     return;
   AddCreator(CreatorPtr(new FlameCreator(m_owner_id, GetPosition(), m_explision_range)));
+  m_owner->DecreaseUsedBombCount();
   SetAliveFlag(false);
 }

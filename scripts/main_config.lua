@@ -12,7 +12,7 @@ CONFIG_MaxMapHeight = CONFIG_TilesOnScreenInY - 4;
 CONFIG_MaxPlayers = 2;
 
 CONFIG_BombPlayerHasAtStart = 3;
-CONFIG_FireRangePlayerHasAtStart = 2;
+CONFIG_FlameRangePlayerHasAtStart = 2;
 
 CONFIG_BombTimeToLive = 1.0;  -- (in seconds)
 

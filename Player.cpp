@@ -11,7 +11,8 @@ Player::Player(size_t id, Position initial_position, PT::PlayerType type, Player
     m_current_action_start_time(SDL_GetTicks()),
     m_is_dying(false),
     m_all_bomb_count(g_bomb_player_has_at_start),
-    m_fire_range(g_fire_range_player_has_at_start) {
+    m_used_bomb_count(0),
+    m_flame_range(g_flame_range_player_has_at_start) {
 
   SetController(controller);
 }
@@ -119,7 +120,7 @@ void Player::PerformAction(PA::PlayerAction action) {
   }
   // "Bomb" actions
   else if (action == PA::PlaceBomb) {
-    AddCreator(CreatorPtr(new BombCreator(GetId(), GetPosition(), GetFireRange())));
+    PlaceBomb();
   }
   // Other Actions
   else if (action == PA::None) {
@@ -127,6 +128,17 @@ void Player::PerformAction(PA::PlayerAction action) {
   }
   else {
     std::cerr << "Got unknown action! [" << action << "]\n";
+  }
+}
+
+
+void Player::PlaceBomb() {
+  PlaceBomb(GetPosition(), GetFlameRange());
+}
+
+void Player::PlaceBomb(const Position& position, size_t range) {
+  if (GetAvailableBombCount()>0) {   // can place?
+    AddCreator(CreatorPtr(new BombCreator(GetId(), position, range)));
   }
 }
 

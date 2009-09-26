@@ -12,7 +12,7 @@ extern size_t g_max_map_height;
 extern size_t g_max_players;
 
 extern size_t g_bomb_player_has_at_start;
-extern size_t g_fire_range_player_has_at_start;
+extern size_t g_flame_range_player_has_at_start;
 
 extern double g_bomb_time_to_live;  // (in seconds)
 

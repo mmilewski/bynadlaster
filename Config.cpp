@@ -61,7 +61,7 @@ void Config::UpdateGlobalConstants() {
   g_max_map_height = Config::Int("MaxMapHeight");
   g_max_players = Config::Int("MaxPlayers");
   g_bomb_player_has_at_start = Config::Int("BombPlayerHasAtStart");
-  g_fire_range_player_has_at_start = Config::Int("FireRangePlayerHasAtStart");
+  g_flame_range_player_has_at_start = Config::Int("FlameRangePlayerHasAtStart");
   g_bomb_time_to_live = Config::Double("BombTimeToLive");
   g_render_aabbs = Config::Boolean("RenderAABBs");
 }

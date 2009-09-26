@@ -1,16 +1,16 @@
-#ifndef __FIRERANGEPOWERUP_H_INCLUDED__
-#define __FIRERANGEPOWERUP_H_INCLUDED__
+#ifndef __FLAMERANGEPOWERUP_H_INCLUDED__
+#define __FLAMERANGEPOWERUP_H_INCLUDED__
 
 #include "Powerup.h"
 
 
-class FireRangePowerup : public Powerup {
+class FlameRangePowerup : public Powerup {
 public:
-  FireRangePowerup(Position position)
+  FlameRangePowerup(Position position)
     : Powerup(position) {
   }
 
-  void Affect(Player& player) { player.IncreaseFireRange(); }
+  void Affect(Player& player) { player.IncreaseFlameRange(); }
 
 protected:
   void DoDraw() const;

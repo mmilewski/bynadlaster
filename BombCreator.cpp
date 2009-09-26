@@ -11,7 +11,8 @@ BombCreator::BombCreator(size_t owner_id, Position initial_position, size_t rang
 void BombCreator::Create(Game& game) {
   MapPtr map = game.GetMap();
   const Position bomb_dst_pos = Position(floor(GetPosition().x+.5), floor(GetPosition().y+.5));
-  BombPtr bomb = BombPtr(new Bomb(m_owner_id, bomb_dst_pos, m_range));
+  PlayerPtr bomb_owner = game.GetPlayerById(m_owner_id);
+  BombPtr bomb = BombPtr(new Bomb(bomb_owner, bomb_dst_pos, m_range));
   const AABB bomb_aabb = bomb->GetAABB();
   bool can_place_bomb = true;
 
@@ -25,6 +26,7 @@ void BombCreator::Create(Game& game) {
   }
 
   if (can_place_bomb && map->IsFieldStandable(bomb_dst_pos)) {
+    bomb_owner->IncreaseUsedBombCount();
     game.AddObject(bomb);
   }
 }
