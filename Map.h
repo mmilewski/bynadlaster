@@ -18,8 +18,9 @@ public:
   size_t GetHeight() const { return m_height; }
   FT::FieldType GetFieldType(size_t x, size_t y) const  { return y<GetHeight() && x<GetWidth() ? m_map[y][x] : FT::Wall; }
   void SetFieldType(size_t x, size_t y, FT::FieldType type)  { m_map[y][x] = type; }
-  AABB GetFieldAABB(size_t x, size_t y)  { return AABB(Position(3+x, 1+y) + Position(.0,.0),
-                                                       Position(3+x+1, 1+y+1) - Position(.0,.0)); }
+  Position GetFieldPosition(size_t x, size_t y) const  { return Position(x+3, y+1); }
+  AABB GetFieldAABB(size_t x, size_t y) const  { return AABB(GetFieldPosition(x, y) + Position( .0,  .0),
+                                                             GetFieldPosition(x, y) + Position(1.0, 1.0)); }
 
   Position PositionToPositionOnMap(const Position& position) const;
 

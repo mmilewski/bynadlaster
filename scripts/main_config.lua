@@ -16,6 +16,6 @@ CONFIG_FlameRangePlayerHasAtStart = 2;
 
 CONFIG_BombTimeToLive = 1.0;  -- (in seconds)
 
-CONFIG_RenderAABBs = true;   -- whether or not to render aabbs
+CONFIG_RenderAABBs = false;   -- whether or not to render aabbs
 
 print('main_config.lua: [ LOADED ]');

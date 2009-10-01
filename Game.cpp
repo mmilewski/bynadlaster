@@ -13,6 +13,8 @@
 #include "Text.h"
 #include "AfterKillPoints.h"
 
+#include "BoxInFire.h"
+
 
 Game::Game() {
   m_map.reset(new Map(g_max_map_width, g_max_map_height));
@@ -159,6 +161,7 @@ void Game::CheckIfObjectCollidesWithMap(const MapPtr& map, ObjectPtr& object, do
 //         std::cout << "Field AABB: " << field_aabb.GetMin() << " " << field_aabb.GetMax() << "\n"
 //                   << "Flame AABB: " << flame_aabb.GetMin() << " " << flame_aabb.GetMax() << "\n";
         map->SetFieldType(x, y, FT::Floor);
+        m_non_entities.push_back(NonEntityPtr(new BoxInFire(map->GetFieldPosition(x,y))));
       }
     }
   }
