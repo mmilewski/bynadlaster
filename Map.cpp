@@ -79,6 +79,8 @@ void Map::DrawTile(size_t x, size_t y, FT::FieldType type) {
     break;
   case FT::Wall:
     Engine::Get().Renderer()->DrawSprite(TexCoords(415.0, 126.0, 16.0, 16.0), tile_position);
+    if (g_render_aabbs)
+      Engine::Get().Renderer()->DrawAABB(GetFieldAABB(x,y));
     break;
   }
 }

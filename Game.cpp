@@ -84,21 +84,26 @@ void Game::DoUpdate(double dt) {
 
   // check collisions object-object - time complexity O(n^2)
   std::vector<ObjectPtr>::iterator outer = m_objects.begin(), inner;
+  ObjectPtr outerObject, innerObject;
   for( ; outer!=m_objects.end(); ++outer ) {
-    if (false==(*outer)->IsAlive())
+    outerObject = *outer;
+    if (false==outerObject->IsAlive())
       continue;
     inner = outer;
-    OT::ObjectType outerType = (*outer)->GetType();
+    OT::ObjectType outerType = outerObject->GetType();
     while (++inner!=m_objects.end()) {
-      if ((*inner)->IsAlive() && (*outer)->GetAABB().CollidesWith((*inner)->GetAABB())) {   // is alive && collides
-        OT::ObjectType innerType = (*inner)->GetType();
+      innerObject = *inner;
+      if (innerObject->IsAlive()==false)
+        continue;
+      OT::ObjectType innerType = innerObject->GetType();
+      if (outerObject->GetAABB().CollidesWith(innerObject->GetAABB())) {   // is alive && collides
         // bomb <-> flame
         {
           if (innerType==OT::Bomb && outerType==OT::Flame) {
-            boost::dynamic_pointer_cast<Bomb>(*inner)->Detonate();
+            boost::dynamic_pointer_cast<Bomb>(innerObject)->Detonate();
           }
           else if (innerType==OT::Flame && outerType==OT::Bomb) {
-            boost::dynamic_pointer_cast<Bomb>(*outer)->Detonate();
+            boost::dynamic_pointer_cast<Bomb>(outerObject)->Detonate();
           }
         }
       }
@@ -159,15 +164,16 @@ void Game::CheckIfObjectCollidesWithMap(const MapPtr& map, ObjectPtr& object, do
   for (size_t y=0; y < map->GetHeight(); ++y) {
     for (size_t x=0; x < map->GetWidth(); ++x) {
       const AABB field_aabb = map->GetFieldAABB(x,y);
-      if (map->GetFieldType(x, y)==FT::Box && field_aabb.CollidesWith(flame_aabb)) {  // field is box && aabbs collide
-//         std::cout << "Field AABB: " << field_aabb.GetMin() << " " << field_aabb.GetMax() << "\n"
-//                   << "Flame AABB: " << flame_aabb.GetMin() << " " << flame_aabb.GetMax() << "\n";
-        map->SetFieldType(x, y, FT::Floor);
-        m_non_entities.push_back(NonEntityPtr(new BoxInFire(map->GetFieldPosition(x,y))));
+      if (map->GetFieldType(x, y)!=FT::Box) {
+        continue;
       }
+      if (field_aabb.CollidesWith(flame_aabb)) {
+        map->SetFieldType(x, y, FT::Floor);
+        m_non_entities.push_back(NonEntityPtr(new BoxInFire(map->GetFieldPosition(x, y))));
+      }
+
     }
   }
-#warning TODO: add burning box
 }
 
 

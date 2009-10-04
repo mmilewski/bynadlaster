@@ -33,6 +33,8 @@ struct AABB {
   const Position& GetMin() const { return min; }
   const Position& GetMax() const { return max; }
 
+  friend std::ostream& operator<< (std::ostream& os, const AABB& aabb);
+
 private:
   Position min;
   Position max;

@@ -69,3 +69,10 @@ bool AABB::IntersectsUsingDirectionWith(const AABB& other, const Direction& dir)
 
   return true;
 }
+
+
+
+std::ostream& operator<< (std::ostream& os, const AABB& aabb) {
+  os << "[ min: " << aabb.GetMin() << ", max: " << aabb.GetMax() << ']';
+  return os;
+}
