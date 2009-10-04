@@ -58,7 +58,9 @@ void Game::DoUpdate(double dt) {
         continue;
       switch(object->GetType()) {
       case OT::Bomb:
-        if(player->GetNextAABB(dt).IntersectsUsingDirectionWith(object->GetAABB(), player->GetDirection())) {
+        // if player doesn't collide with bomb now && will collide if he moves, then stop him!
+        if (player->GetAABB().CollidesWith(object->GetAABB())==false
+            && (player->GetNextAABB(dt).IntersectsUsingDirectionWith(object->GetAABB(), player->GetDirection()))) {
           player->PerformAction(PA::GoNowhere);
         }
         break;
