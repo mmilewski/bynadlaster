@@ -26,3 +26,8 @@ void BombPowerup::DoUpdate(double /* dt */) {
   if(!IsAlive())
     return;
 }
+
+
+void BombPowerup::Affect(Player& player) {
+  player.IncreaseBombCount();
+}

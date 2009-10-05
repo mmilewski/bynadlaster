@@ -23,3 +23,8 @@ void FlameRangePowerup::DoUpdate(double /* dt */) {
   if(!IsAlive())
     return;
 }
+
+
+void FlameRangePowerup::Affect(Player& player) {
+  player.IncreaseFlameRange();
+}

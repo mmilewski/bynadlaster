@@ -10,7 +10,7 @@ public:
     : Powerup(position) {
   }
 
-  void Affect(Player& player) { player.IncreaseFlameRange(); }
+  void Affect(Player& player);
 
 protected:
   void DoDraw() const;
