@@ -6,36 +6,44 @@
 #include "App.h"
 
 
-void App::CreateWindow(int width, int height, int depth, bool fullscreen) {
+void App::CreateWindow(size_t width, size_t height, size_t depth, bool fullscreen) {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     std::cerr << "Unable to initialize Window Manager (SDL)" << std::flush;
     exit(1);
   }
 
-  SDL_Surface* screen = SDL_SetVideoMode(width, height, depth, 
-					 SDL_HWSURFACE 
-					 | SDL_OPENGL
-					 | SDL_RESIZABLE
-					 | (fullscreen ? SDL_FULLSCREEN : 0));
-  if (!screen) {
-    std::cerr << "Unable to create OpenGL context (SDL)" << std::flush;
-    exit(1);
-  }
-    
+  m_window_height = height;
+  m_window_width = width;
+  m_window_depth = depth;
+  m_window_fullscreen = fullscreen;
+  m_window_flags = SDL_HWSURFACE | SDL_OPENGL | SDL_RESIZABLE | (m_window_fullscreen ? SDL_FULLSCREEN : 0);
+
+  setupSdlVideo();
+
   SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-  m_window_width = width;
-  m_window_height = height;
 }
 
 
-void App::Resize(int width, int height) {
-  glViewport(0, 0, static_cast<GLint>(width), static_cast<GLint>(height));
+void App::setupSdlVideo() {
+  m_screen = SDL_SetVideoMode(m_window_width, m_window_height, m_window_depth, m_window_flags);
+  if (!m_screen) {
+    std::cerr << "Unable to create OpenGL context (SDL)" << std::flush;
+    exit(1);
+  }
+}
+
+
+void App::Resize(size_t width, size_t height) {
+  m_window_width = width;
+  m_window_height = height;
+
+  setupSdlVideo();
+  glViewport(0, 0, static_cast<GLint>(m_window_height), static_cast<GLint>(m_window_height));
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();

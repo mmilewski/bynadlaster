@@ -14,8 +14,8 @@ public:
 
 
 protected:
-  void CreateWindow(int width, int height, int depth, bool fullscreen);
-  void Resize(int width, int height);
+  void CreateWindow(size_t width, size_t height, size_t depth, bool fullscreen);
+  void Resize(size_t width, size_t height);
   void ProcessEvents();
   bool HandleInput(const SDL_Event& event);
   void InitGl();
@@ -28,9 +28,16 @@ protected:
   double GetDeltaTime();
 
 private:
+  void setupSdlVideo();
+
+private:
   GameStatePtr m_game_state;
-  int m_window_width;
-  int m_window_height;
+  size_t m_window_width;
+  size_t m_window_height;
+  size_t m_window_depth;
+  size_t m_window_flags;
+  bool m_window_fullscreen;
+  SDL_Surface* m_screen;
 };
 
 
