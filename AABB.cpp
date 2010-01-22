@@ -2,6 +2,7 @@
 
 
 bool AABB::CollidesWith(const AABB& other) const {
+	// this method is cool, isn't it?
   const double t_min_x = this->GetMin().x;
   const double t_max_x = this->GetMax().x;
   const double t_min_y = this->GetMin().y;
